@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
+<head>
+    <link th:href="@{/css/body.css}" rel="stylesheet"/>
+    <link th:href="@{/css/formStyle.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet</title>
+</head>
+<body>
+<div class="body-container">
+    <div class="form-container">
+        <div class="form-messages">
+
+            <div class=" error form-error">
+                <span th:if="${error}">Invalid Username or Password!</span>
+            </div>
+            <div class="form-message">
+                <span th:if="${message}" th:text="*{message}"></span>
+            </div>
+            <div class="logout">
+                <span th:if="${logout}">You've been logged out successfully!!!</span>
+            </div>
+        </div>
+
+        <form th:action="@{/auth/login}" method="POST">
+
+            <div class="item-container">
+                <div class="item-label"><label for="email">Email: </label></div>
+                <div class="item-input"><input type="text" id="email" name="email" required/></div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label"><label for="password">Password:</label></div>
+                <div class="item-input"><input type="text" id="password" name="password" required/></div>
+            </div>
+
+                <button class="form-button" type="submit">Sing In</button>
+        </form>
+
+        <div class="other-form-url">
+            <a href="/auth/register"> Not registration yet? </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

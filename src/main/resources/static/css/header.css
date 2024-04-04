@@ -1,0 +1,37 @@
+
+.header-container {
+    background-color: #f2f2f2;
+    padding: 0.625em;
+    font-size: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.left-buttons button,
+.right-button button {
+    background-color: #072a88;
+    color: white;
+    border: none;
+    padding: 0.625em 1.25em;
+    margin: 0.313em;
+    cursor: pointer;
+    border-radius: 0.313em;
+    font-size: 1em;
+    height: 4em;
+}
+
+.left-buttons button:hover {
+    background-color: #072a88;
+}
+
+
+
+.right-button button {
+    background-color: #f44336;
+}
+
+.right-button button:hover {
+    background-color: #e53935;
+}

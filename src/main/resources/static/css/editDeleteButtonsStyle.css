@@ -1,0 +1,22 @@
+.block-edit-button a,
+.block-delete-button input[type="submit"] {
+    display: inline-block;
+    background-color: #072a88;
+    color: #fff;
+    border: none;
+    border-radius: 0.625em;
+    padding: 0.9375em 1.875em;
+    font-size: 1.125em;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 0.9375em;
+}
+
+.block-delete-button input[type="submit"] {
+    background-color: #d32f2f;
+}
+
+.block-edit-button a:hover,
+.block-delete-button input[type="submit"]:hover {
+    opacity: 0.8;
+}

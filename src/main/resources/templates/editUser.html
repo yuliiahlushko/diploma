@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
+<html lang="en">
+<head>
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/body.css}" rel="stylesheet"/>
+    <link th:href="@{/css/formStyle.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet</title>
+</head>
+<body>
+<head th:replace="~{header :: header}"></head>
+
+<div class="body-container">
+    <div class="form-container">
+        <div class="form-messages">
+
+            <div class="error form-error">
+                <span th:if="${error}" th:text="*{error}"></span>
+            </div>
+
+        </div>
+
+        <form th:action="@{/web/user}" th:object="${user}" method="POST">
+            <input type="hidden" name="_method" value="PATCH"/>
+
+            <div class="item-container">
+                <div class="item-label"><label for="name">Name:</label></div>
+                <div class="item-input"><input type="text" id="name" th:field="*{name}"/></div>
+                <div class="item-error error"><span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span></div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label"><label for="newPassword">New password:</label></div>
+                <div class="item-input"><input type="text" id="newPassword" name="newPassword"/></div>
+                <div class="item-error error"><span th:if="${#fields.hasErrors('newPassword')}"
+                                              th:errors="*{newPassword}"></span></div>
+            </div>
+
+            <button class="form-button" type="submit">Update</button>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>
