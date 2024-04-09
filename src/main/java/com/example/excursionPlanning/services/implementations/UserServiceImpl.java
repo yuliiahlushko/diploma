@@ -14,7 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.Principal;
+import java.util.Base64;
 import java.util.Optional;
 
 @Service
@@ -38,9 +41,10 @@ public class UserServiceImpl implements UserService {
         User user = getUserByPrincipal(principal).orElseThrow(() ->
                 new UsernameNotFoundException("User with this email not found " ));
 
-        user.setName(userDTO.getName());
+        user.setBio(userDTO.getBio());
         user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-
+        user.setLogin(userDTO.getLogin());
+        user.setImage(userDTO.getImage());
         User updatedUser = null;
         try {
             updatedUser = userRepository.save(user);
@@ -53,11 +57,20 @@ public class UserServiceImpl implements UserService {
     public User patchUser(UserDTO userDTO, Principal principal) {
         User user = getUserByPrincipal(principal).orElseThrow(() ->
                 new UsernameNotFoundException("User with this email not found " ));
-        if (userDTO.getName() != null) {
-            user.setName(userDTO.getName());
+        if (userDTO.getBio() != null && !userDTO.getBio().isEmpty()) {
+            user.setBio(userDTO.getBio());
         }
-        if (userDTO.getPassword() != null) {
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             user.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
+        }
+        if (userDTO.getLogin() != null && !userDTO.getLogin().isEmpty()) {
+            user.setLogin(userDTO.getLogin());
+        }
+        if (userDTO.getImage() != null ) {
+            user.setImage(userDTO.getImage());
+        }
+        if (userDTO.getEmail() != null&& !userDTO.getEmail().isEmpty()) {
+            user.setEmail(userDTO.getEmail());
         }
 
         User updatedUser = null;
@@ -75,15 +88,27 @@ public class UserServiceImpl implements UserService {
                 new UsernameNotFoundException("User with this email not found " ));
 
         UserDTO updateUser = new UserDTO();
-        updateUser.setName(user.getName());
-        updateUser.setPassword(currentUser.getPassword());
-        updateUser.setEmail(currentUser.getEmail());
+        updateUser.setBio(user.getBio());
+        updateUser.setLogin(user.getLogin());
+        updateUser.setPassword(user.getNewPassword());
+        if(!user.getNewImage().isEmpty()){
+        try {
+            updateUser.setImage(user.getNewImage().getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }}
+        updateUser.setEmail(user.getEmail());
 
         User updatedUser = patchUser(updateUser, principal);
 
         UpdateUserFormRequest response = new UpdateUserFormRequest();
-        response.setName(updatedUser.getName());
-        response.setNewPassword(user.getNewPassword());
+        response.setBio(updatedUser.getBio());
+        response.setLogin(updatedUser.getLogin());
+        response.setEmail(updatedUser.getEmail());
+
+        response.setNewImage(user.getNewImage());
+        response.setNewPassword(updatedUser.getPassword());
+
         return response;
 
     }

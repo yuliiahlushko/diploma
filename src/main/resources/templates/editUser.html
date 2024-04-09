@@ -23,22 +23,36 @@
 
         </div>
 
-        <form th:action="@{/web/user}" th:object="${user}" method="POST">
+        <form th:action="@{/web/user}" th:object="${user}" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="_method" value="PATCH"/>
 
             <div class="item-container">
-                <div class="item-label"><label for="name">Name:</label></div>
-                <div class="item-input"><input type="text" id="name" th:field="*{name}"/></div>
-                <div class="item-error error"><span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span></div>
+                <div class="item-label"><label for="login">Login:</label></div>
+                <div class="item-input"><input type="text" id="login" th:field="*{login}"/></div>
+                <div class="error item-error"><span th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span></div>
             </div>
-
+            <div class="item-container">
+                <div class="item-label"><label for="email">Email:</label></div>
+                <div class="item-input"><input type="text" id="email" th:field="*{email}"/></div>
+                <div class="item-error error"><span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></div>
+            </div>
             <div class="item-container">
                 <div class="item-label"><label for="newPassword">New password:</label></div>
                 <div class="item-input"><input type="text" id="newPassword" name="newPassword"/></div>
                 <div class="item-error error"><span th:if="${#fields.hasErrors('newPassword')}"
                                               th:errors="*{newPassword}"></span></div>
             </div>
-
+            <div class="item-container">
+                <div class="item-label"><label for="bio">Bio:</label></div>
+                <div class="item-input"><textarea type="text" id="bio" th:field="*{bio}"> </textarea> </div>
+                <div class="item-error error"><span th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}"></span></div>
+            </div>
+            <div class="item-container">
+                <div class="item-label input-file"><label for="newImage">Upload new image</label></div>
+                <div class="item-input "><input type="file"  accept="image/*" style="display: none;"  id="newImage" name="newImage"/></div>
+                <div class="item-error error"><span th:if="${#fields.hasErrors('newImage')}"
+                                                    th:errors="*{newImage}"></span></div>
+            </div>
             <button class="form-button" type="submit">Update</button>
         </form>
 

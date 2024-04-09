@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/auth")
 public class LoginController {
 
-//    @PostMapping(value = "/login",consumes = "application/json")
-//    public String getRestLogin(){
-//        return "redirect:/auth/api/login";
-//    }
+
 
     @RequestMapping(value = "/login")
     public String getLogin(@RequestParam(value = "error", required = false) String error,

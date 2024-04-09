@@ -49,7 +49,7 @@ public class SecurityWebConfiguration {
                     .usernameParameter("email")
                     .passwordParameter("password")
                     .successForwardUrl("/web/tasks")
-                    .failureForwardUrl("/auth/login")
+
 
                     .and()
                     .logout()

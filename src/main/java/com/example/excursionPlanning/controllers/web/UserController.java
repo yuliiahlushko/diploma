@@ -2,8 +2,10 @@ package com.example.excursionPlanning.controllers.web;
 
 
 import com.example.excursionPlanning.dto.UserDTO;
-import com.example.excursionPlanning.facade.UserFacade;
+import com.example.excursionPlanning.facade.UserFacadeRequest;
+import com.example.excursionPlanning.facade.UserFacadeResponse;
 import com.example.excursionPlanning.payload.web.UpdateUserFormRequest;
+import com.example.excursionPlanning.payload.web.UserProfileResponse;
 import com.example.excursionPlanning.services.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,34 +16,64 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Base64;
 
 @Controller
 @RequestMapping(value = "/web/user")
-public class WebUserController {
+public class UserController {
 
     @Autowired
     UserService userService;
 
     @Autowired
-    UserFacade userFacade;
+    UserFacadeRequest userFacadeRequest;
+
+    @Autowired
+    UserFacadeResponse userFacadeResponse;
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping()
-    public String getUser(Principal principal,
-                          Model model) {
+    public String getUserForUpdate(Principal principal,
+                                   Model model) {
         try {
-            UserDTO currentUser = userFacade.convertUserToUserDTO(userService.getCurrentUser(principal)
+            UserDTO currentUser = userFacadeRequest.convertUserToUserDTO(userService.getCurrentUser(principal)
                     .orElseThrow(() -> new RuntimeException("User not found")));
+
             UpdateUserFormRequest user = new UpdateUserFormRequest();
-            user.setName(currentUser.getName());
+
+            user.setLogin(currentUser.getLogin());
+            user.setEmail(currentUser.getEmail());
+            user.setBio(currentUser.getBio());
+
+
             model.addAttribute("user", user);
+
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
 
         }
+
         return "editUser";
+
+    }
+
+    @GetMapping("/profile")
+    public String getUser(Principal principal,
+                          Model model) {
+        try {
+            UserProfileResponse user = userFacadeResponse.convertUserToUserFacadeResponse(userService.getCurrentUser(principal)
+                    .orElseThrow(() -> new RuntimeException("User not found")));
+
+            model.addAttribute("user", user);
+
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+
+        }
+
+        return "userPage";
 
     }
 
@@ -56,21 +88,29 @@ public class WebUserController {
         }
 
         try {
+
+
             UpdateUserFormRequest response = userService.patchUser(user, principal, passwordEncoder);
+
             model.addAttribute("user", response);
 
         } catch (Exception e) {
-            UserDTO oldUser = userFacade.convertUserToUserDTO(userService.getCurrentUser(principal)
+            UserDTO oldUser = userFacadeRequest.convertUserToUserDTO(userService.getCurrentUser(principal)
                     .orElseThrow(() -> new RuntimeException("User not found")));
 
             UpdateUserFormRequest response = new UpdateUserFormRequest();
-            response.setName(oldUser.getName());
-            response.setNewPassword(user.getNewPassword());
+
+            response.setLogin(oldUser.getLogin());
+            response.setEmail(oldUser.getEmail());
+
+            response.setBio(oldUser.getBio());
+
+
             model.addAttribute("user", response);
             model.addAttribute("error", e.getMessage());
             return "editUser";
         }
-        return "redirect:/web/tasks";
+        return "redirect:/web/user";
 
 
     }

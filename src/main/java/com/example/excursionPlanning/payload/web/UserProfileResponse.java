@@ -8,14 +8,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
+
 
 @Data
 @Component
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateUserFormRequest {
+public class UserProfileResponse {
 
 
     private String bio;
@@ -26,7 +26,7 @@ public class UpdateUserFormRequest {
 
     private String login;
 
-    private MultipartFile newImage;
+    private String newImage;
 
 
     private String newPassword;

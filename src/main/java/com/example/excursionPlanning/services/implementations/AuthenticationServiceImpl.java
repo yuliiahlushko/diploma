@@ -35,12 +35,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public AuthenticationResponse register(UserDTO userDTO) {
 
+
         var newUser = User.builder()
-                .name(userDTO.getName())
                 .email(userDTO.getEmail())
+                .login(userDTO.getLogin())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .role(Role.USER)
+                .bio(userDTO.getBio())
                 .build();
+
+
         try {
 
             if (userRepository.getUserByEmail(userDTO.getEmail()).isPresent()) {

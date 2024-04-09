@@ -1,0 +1,87 @@
+
+.body-container {
+
+    align-items: flex-start;
+    justify-content: center;
+    box-sizing: border-box;
+
+}
+
+.form-container {
+    margin: 2em 0.5em;
+    padding: 2em;
+    justify-content: stretch;
+    background-color: #1d72c8;
+    border-radius: 0.313em;
+    box-shadow: 0px 0.5em 1.2em rgba(0, 0, 0, 0.3);
+
+}
+
+.photo-container  {
+
+    min-width: 20%;
+    max-width: 20%;
+    min-height: 20%;
+    max-height: 20%;
+
+}
+.bio-container {
+
+    min-width: 55%;
+    max-width: 55%;
+ }
+ .down-container {
+
+    min-width: 85%;
+     max-width: 85%;
+
+ }
+ /* Зображення буде мати ширина 300px і висота 200px */
+.photo {
+    display: flex;
+    align-items: center;
+    justify-content:space-around;
+    max-height: 90%;
+    min-height: 90%;
+    min-width: 90%;
+    max-width: 90%;
+
+}
+.photo img {
+    /* Ваші стилі для зображення */
+    width: 100%; /* Задати ширину зображення */
+    height: 100%; /* Зберігає пропорції */
+    border-radius: 50%;
+    box-shadow: 0px 0.5em 1.2em rgba(0, 0, 0, 0.3);
+}
+
+.form-container h1 {
+    font-size: 3em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.25em;
+}
+
+
+.item-container {
+    margin-bottom: 1.25em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center ;
+    align-items: flex-start;
+
+    justify-items: stretch;
+}
+
+.item-container h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 0.9em;
+    color: black;
+}
+
+.item-container h3 {
+    font-size: 1em;
+    margin-bottom: 0.9em;
+    color: #cad6fd;
+}

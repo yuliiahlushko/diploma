@@ -1,16 +1,22 @@
 package com.example.excursionPlanning.entity;
 
 import com.example.excursionPlanning.entity.enums.Role;
+import com.example.excursionPlanning.services.FileLoader;
 import jakarta.persistence.*;
 
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,17 +30,25 @@ import java.util.List;
 @ToString
 public class User implements UserDetails  {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Lob
+    private byte[] image;
 
-    private String name;
+    @Column(columnDefinition = "text")
+    private String bio;
 
     @Column(unique = true)
+    @Size(max = 40,message = "The maximum name size is 40 literals")
+    private String login;
+
+    @Column(unique = true)
+    @Email
     private String email;
 
+    @Pattern(regexp = "^[^\\s]{8,}$", message = "The min password size is 8 literals")
     private String password;
 
     @Enumerated
@@ -44,12 +58,21 @@ public class User implements UserDetails  {
 //    @ToString.Exclude
 //    private  List<Task> tasks = new ArrayList<>();
     @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
+    @Column(updatable = false)
     private LocalDateTime createDate;
 
 
     @PrePersist
     protected void safeCreateTime() {
         this.createDate = LocalDateTime.now();
+
+        try {
+           this.image = new FileLoader().loadFileAsBytes("image-icon.jpg");
+
+            // Сохраняем массив байтов в поле объекта или переменную, где вам нужно будет использовать его
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

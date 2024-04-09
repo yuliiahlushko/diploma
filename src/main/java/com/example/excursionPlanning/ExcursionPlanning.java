@@ -27,12 +27,5 @@ public class ExcursionPlanning {
 
 
 
-    @RequestMapping("web/tasks")
-    public String demo(Principal principal,
-                       Model model) {
-
-        return String.format("Hello"+ principal.getName());
-
-    }
 
 }

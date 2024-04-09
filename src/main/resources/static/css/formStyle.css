@@ -13,10 +13,10 @@
 .form-container {
     margin: 4em;
     width: 27%;
-    background-color: #f5f5f5;
     padding: 2em;
     border-radius: 0.313em;
     box-shadow: 0px 0.125em 0.625em rgba(0, 0, 0, 0.3);
+    background-color: #fbf3fd;
 }
 
 
@@ -54,7 +54,7 @@
     padding: 0.625em;
     border-radius: 0.313em;
     background-color: #072a88;
-    color: #fff;
+    color: #e9eaec;
     border: none;
     font-size: 1.2em;
     width: 100%;
@@ -66,8 +66,22 @@
 
 .form-button, .item-container input {
     box-sizing: border-box;
+
 }
 
+.input-file label{
+    padding: 0.625em;
+    border: 0.063em solid #ccc;
+    border-radius: 0.313em;
+    font-size: 1.2em;
+    width: 100%;
+    min-height: 40%;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 0.625em;
+
+}
 .form-button:hover {
     opacity: 0.8;
 }
@@ -117,6 +131,7 @@
     font-size: 1em;
 
 }
+
 
 
 /* select */
