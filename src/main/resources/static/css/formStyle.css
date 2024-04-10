@@ -132,6 +132,14 @@
 
 }
 
+.image-preview img {
+    width: 200px; /* Максимальна ширина */
+    height: 200px; /* Максимальна висота */
+    border: 1px solid #ccc; /* Обрамлення */
+    margin-top: 3em; /* Відступ зверху */
+    border-radius: 50%;
+    box-shadow: 0px 0.5em 1.2em rgba(0, 0, 0, 0.3);
+}
 
 
 /* select */

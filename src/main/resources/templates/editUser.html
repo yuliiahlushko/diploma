@@ -49,14 +49,38 @@
             </div>
             <div class="item-container">
                 <div class="item-label input-file"><label for="newImage">Upload new image</label></div>
-                <div class="item-input "><input type="file"  accept="image/*" style="display: none;"  id="newImage" name="newImage"/></div>
-                <div class="item-error error"><span th:if="${#fields.hasErrors('newImage')}"
-                                                    th:errors="*{newImage}"></span></div>
+                <div class="item-input"><input type="file" accept="image/*" style="display: none;" id="newImage" name="newImage" onchange="previewImage(event)" /></div>
+                <div class="image-preview" id="imagePreviewContainer" style="display: none;">
+                    <img id="image-preview" src="#" alt="Image Preview" />
+                </div>
+                <div class="item-error error">
+                    <span th:if="${#fields.hasErrors('newImage')}" th:errors="*{newImage}"></span>
+                </div>
             </div>
+
             <button class="form-button" type="submit">Update</button>
         </form>
 
     </div>
 </div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('image-preview');
+            output.src = reader.result;
+            document.getElementById('imagePreviewContainer').style.display = 'block'; // Показуємо контейнер передпросмотру зображення
+        }
+        if (event.target.files.length > 0) {
+            reader.readAsDataURL(event.target.files[0]);
+        } else {
+            // Приховуємо контейнер передпросмотру зображення, якщо файл не обрано
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+        }
+    }
+
+</script>
+
 </body>
 </html>
