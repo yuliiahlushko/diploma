@@ -23,4 +23,6 @@ public interface UserService {
     UpdateUserFormRequest patchUser(UpdateUserFormRequest user, Principal principal,
                                     BCryptPasswordEncoder passwordEncoder);
 
+
+    Optional<User> deletePhoto(Principal principal);
 }

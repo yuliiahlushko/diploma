@@ -5,6 +5,7 @@ import com.example.excursionPlanning.dto.UserDTO;
 import com.example.excursionPlanning.entity.User;
 
 import com.example.excursionPlanning.payload.web.UpdateUserFormRequest;
+import com.example.excursionPlanning.services.FileLoader;
 import com.example.excursionPlanning.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,6 +112,20 @@ public class UserServiceImpl implements UserService {
 
         return response;
 
+    }
+
+    @Override
+    public Optional<User> deletePhoto(Principal principal) {
+
+        UserDTO currentUser = new UserDTO();
+
+        try {
+            currentUser.setImage(new FileLoader().loadFileAsBytes("image-icon.jpg"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.of(patchUser(currentUser,principal));
     }
 
     @Transactional(readOnly = true)

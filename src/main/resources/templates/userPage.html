@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org"></html>
 <html lang="en">
 <head>
-     <link th:href="@{/css/body.css}" rel="stylesheet"/>
+
+    <link th:href="@{/css/body.css}" rel="stylesheet"/>
     <link th:href="@{/css/header.css}" rel="stylesheet"/>
     <link th:href="@{/css/itemPage.css}" rel="stylesheet"/>
     <meta charset="UTF-8">
@@ -17,46 +18,73 @@
 <div class="body-container">
 
 
-    <div class="item-container" th:if="${user != null}" >
+    <div class="item-container" th:if="${user != null}">
 
 
-
-
-        <div class="form-container photo-container">
+        <div class="form-container photo-external-container">
+            <div class="photo-container">
 
                 <div class="photo">
 
-                   <img th:src="@{'data:image/png;base64,' + ${user.newImage}}" alt="Image">
+                    <img th:src="@{'data:image/png;base64,' + ${user.newImage}}" alt="Image">
 
-               </div>
-           </div>
+                </div>
+            </div>
+            <div class="buttons"
+                 th:if="${#authentication.principal != null and #authentication.principal.login == user.login}">
+                <button class="form-button" onclick="deletePhoto()">Delete photo</button>
+                <button class="form-button" onclick="editProfile()">Edit profile</button>
+            </div>
+        </div>
 
-           <div class="form-container bio-container">
-               <h2>Login</h2>
-               <h3> <span th:if="${user.login} != null" th:text="${user.login}" th:unless="${user.login} == null">Not indicated</span> </h3>
-                 <h2> Email: </h2>
-                 <h3> <span th:if="${user.email} != null" th:text="${user.email}" th:unless="${user.email} == null">Not indicated</span></h3>
-                 <h2>Bio: </h2>
-                   <h3> <span th:if="${user.bio} != null" th:text="${user.bio}" th:unless="${user.bio} == null">Not indicated</span></h3>
-               <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh ewndsuk  dhniew
-                   eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
-                   wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
-               <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh ewndsuk  dhniew
-                   eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
-                   wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
-          </div>
+        <div class="form-container bio-container">
+            <h2>Login</h2>
+            <h3><span th:if="${user.login} != null" th:text="${user.login}" th:unless="${user.login} == null">Not indicated</span>
+            </h3>
+            <h2> Email: </h2>
+            <h3><span th:if="${user.email} != null" th:text="${user.email}" th:unless="${user.email} == null">Not indicated</span>
+            </h3>
+            <h2>Bio: </h2>
+            <h3><span th:if="${user.bio} != null" th:text="${user.bio}"
+                      th:unless="${user.bio} == null">Not indicated</span></h3>
+            <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
+                ewndsuk dhniew
+                eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
+                wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
+            <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
+                ewndsuk dhniew
+                eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
+                wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
+        </div>
 
-          <div class="form-container down-container">
+        <div class="form-container down-container">
 
 
-              <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh ewndsuk  dhniew
-              eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
-              wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
+            <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
+                ewndsuk dhniew
+                eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
+                wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
 
-          </div>
-      </div>
+        </div>
+    </div>
 </div>
 
+<script>
+    function deletePhoto() {
+        fetch('/web/user/deletePhoto', {
+            method: 'DELETE'
+        })
+            .then(response => {
+                        window.location.reload();
+            })
+            .catch(error => {
+                console.error('Помилка при видаленні фото:', error);
+            });
+    }
 
-  </body>
-  </html>
+    function editProfile() {
+        window.location.href = '/web/user';
+    }
+</script>
+</body>
+</html>

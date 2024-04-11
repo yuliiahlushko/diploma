@@ -111,9 +111,23 @@ public class UserController {
             model.addAttribute("error", e.getMessage());
             return "editUser";
         }
-        return "redirect:/web/user";
+        return "redirect:/web/user/profile";
 
 
     }
 
+    @DeleteMapping("/deletePhoto")
+    public String deleteUserPhoto(Principal principal,
+                                  Model model) {
+        try {
+            userService.deletePhoto(principal)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+
+        }
+
+        return "redirect:/web/user/profile";
+
+    }
 }
