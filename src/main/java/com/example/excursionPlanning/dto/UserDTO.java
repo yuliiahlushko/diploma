@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
 public class UserDTO {
 
 
-    @Size(max = 500,message = "The maximum name size is 500 literals")
+    @Size(max = 500,message = "The maximum bio size is 500 literals")
     private String bio;
 
     @Email(message = "Wrong email format")
     private String email;
 
-    @Size(max = 40,message = "The maximum name size is 40 literals")
+    @Size(max = 40,message = "The maximum login size is 40 literals")
     private String login;
 
     @Size(min = 8,message = "The min password size is 8 literals")

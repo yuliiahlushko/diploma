@@ -22,7 +22,7 @@ public class Monument {
     private String title;
     private String description;
     private Integer price;
-    private Integer avgGrade;
+    private Integer avgGrade = 0;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "monument")
     private List<Grade> grades = new ArrayList<>();

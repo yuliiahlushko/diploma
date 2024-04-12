@@ -40,7 +40,7 @@ public class Excursion {
 
 
     @Lob
-    private byte[] image;
+    private byte[] image ;
 
     @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
     @Column(updatable = false)
