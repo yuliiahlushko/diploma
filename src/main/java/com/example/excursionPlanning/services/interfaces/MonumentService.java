@@ -22,9 +22,9 @@ public interface MonumentService {
 
     Optional<Monument> getMonumentById(Long id, Principal principal);
 
-    Monument putMonument(MonumentDTO monumentDTO, Principal principal);
+    Optional<Monument> putMonument(MonumentDTO monumentDTO, Principal principal);
 
-    Monument patchMonument(MonumentDTO monumentDTO, Principal principal);
+    Optional<Monument> patchMonument(MonumentDTO monumentDTO, Principal principal);
 
 
     List<Monument> getMonumentByTitle(String title);
@@ -37,7 +37,7 @@ public interface MonumentService {
 
     //Pageable
 
-    Page<Monument> getMonumentByTitle(String title, Pageable pageable);
+    Page<Monument> getMonumentsByTitle(String title, Pageable pageable);
 
     Page<Monument> getMonumentsByPrice(Long minPrice, Long maxPrice, Pageable pageable);
 

@@ -1,6 +1,7 @@
 package com.example.excursionPlanning.dao;
 
 import com.example.excursionPlanning.entity.Comment;
+import com.example.excursionPlanning.entity.Excursion;
 import com.example.excursionPlanning.entity.Grade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,11 +16,14 @@ import java.util.Optional;
 public interface GradeRepository extends JpaRepository<Grade, Long> {
 
 
+    @Query("SELECT g FROM Grade g WHERE g.id = :id")
+    Optional<Grade> getGradeById(@Param("id") Long id);
+
     @Query("SELECT g FROM Grade g WHERE g.monument.id = :monumentId ORDER BY g.createDate DESC")
-    Optional<Comment> getAllGradesByMonumentId(@Param("monumentId") Long monumentId);
+    Optional<Grade> getAllGradesByMonumentId(@Param("monumentId") Long monumentId);
 
     //Pageable
     @Query("SELECT g FROM Grade g WHERE g.monument.id = :monumentId ORDER BY g.createDate DESC")
-    Page<Comment> getAllGradesByMonumentId(@Param("monumentId") Long monumentId,
-                                           Pageable pageable);
+    Page<Grade> getAllGradesByMonumentId(@Param("monumentId") Long monumentId,
+                                         Pageable pageable);
 }

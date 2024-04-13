@@ -1,12 +1,9 @@
 package com.example.excursionPlanning.services.interfaces;
 
-import com.example.excursionPlanning.dto.ExceptionDTO;
 import com.example.excursionPlanning.dto.ImageModelDTO;
 import com.example.excursionPlanning.entity.ImageModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -21,9 +18,9 @@ public interface ImageModelService {
 
     Optional<ImageModel> getImageModelById(Long id, Principal principal);
 
-    ImageModel putImageModel(ImageModelDTO imageModelDTO, Principal principal);
+    Optional<ImageModel> putImageModel(ImageModelDTO imageModelDTO, Principal principal);
 
-    ImageModel patchImageModel(ImageModelDTO imageModelDTO, Principal principal);
+    Optional<ImageModel> patchImageModel(ImageModelDTO imageModelDTO, Principal principal);
 
     Optional<ImageModel> getAllImageModelsByMonumentId(Long monumentId);
 
