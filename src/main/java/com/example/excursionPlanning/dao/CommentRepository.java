@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,7 +19,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Optional<Comment> getCommentById(@Param("id") Long id);
 
     @Query("SELECT c FROM Comment c WHERE c.monument.id = :monumentId ORDER BY c.createDate DESC")
-    Optional<Comment> getAllCommentsByMonumentId(@Param("monumentId") Long monumentId);
+    List<Comment> getAllCommentsByMonumentId(@Param("monumentId") Long monumentId);
 
     //Pageable
     @Query("SELECT c FROM Comment c WHERE c.monument.id = :monumentId ORDER BY c.createDate DESC")

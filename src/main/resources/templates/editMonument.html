@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
+<html lang="en">
+<head>
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/body.css}" rel="stylesheet"/>
+    <link th:href="@{/css/formStyle.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diploma</title>
+</head>
+<body>
+<head th:replace="~{header :: header}"></head>
+
+<div class="body-container">
+    <div class="form-container" th:if="${monument != null}">
+        <div class="form-messages">
+
+            <div class="error form-error">
+                <span th:if="${error}" th:text="*{error}"></span>
+            </div>
+
+        </div>
+
+        <form th:action="@{/web/monuments}" th:object="${monument}" method="POST">
+            <input type="hidden" name="_method" value="PATCH"/>
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="item-container">
+                <div class="item-label"><label for="title">Title: </label></div>
+                <div class="item-input"><input type="text" id="title" th:field="*{title}" required/></div>
+                <div class="error item-error"><span th:if="${#fields.hasErrors('title')}" th:errorclass="error"
+                                                    th:errors="*{title}"></span></div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label"><label for="description">Description:</label></div>
+                <div class="item-input"><input type="text" id="description" th:field="*{description}"/></div>
+                <div class="error item-error"><span th:if="${#fields.hasErrors('description')}"
+                                                    th:errors="*{description}"></span></div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label"><label for="price">Price:</label></div>
+                <div class="item-input"><input type="number" id="price" th:field="*{price}"/></div>
+                <div class="error item-error"><span th:if="${#fields.hasErrors('price')}"
+                                                    th:errors="*{price}"></span></div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label"><label for="city">City:</label></div>
+                <div class="item-input"><input type="text" id="city" th:field="*{city}"/></div>
+                <div class="error item-error"><span th:if="${#fields.hasErrors('city')}"
+                                                    th:errors="*{city}"></span></div>
+            </div>
+
+            <button class="form-button" type="submit">Update</button>
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

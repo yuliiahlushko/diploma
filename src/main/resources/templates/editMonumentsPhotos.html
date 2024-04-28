@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/body.css}" rel="stylesheet"/>
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/itemPage.css}" rel="stylesheet"/>
+    <link th:href="@{/css/editMonumentsPhoto.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <title>Edit Monument Photos</title>
+</head>
+<body>
+
+<head th:replace="~{header :: header}"></head>
+
+<div class="form-messages">
+    <div class="error form-error">
+        <span th:if="${error}" th:text="*{error}"></span>
+    </div>
+</div>
+
+<div class="item-container">
+    <h2>Photos:</h2>
+</div>
+
+<!-- Отображение существующих фотографий -->
+<div class="body-container" th:if="${not #lists.isEmpty(images)}">
+    <div th:each="image, index : ${images}">
+        <div class="photo-edit-container">
+            <div class="photo-container">
+                <div class="photo">
+                    <img th:src="${'data:image/jpeg;base64,' + image.image}" alt="Photo" width="200"/>
+                </div>
+            </div>
+            <form th:action="@{/web/monuments/__${id}__/deletePhoto/{photoId}(photoId=${image.id})}" method="post">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <input type="hidden" name="photoId" th:value="${image.id}"/>
+                <button type="submit" class="form-button delete-button">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="upload-photo-form">
+<div class="item-container">
+    <h2>Upload New Photo:</h2>
+</div>
+
+<!-- Форма для загрузки новых фотографий -->
+<div class="item-container upload-form">
+    <form id="uploadForm" th:action="@{/web/monuments/__${id}__/uploadPhoto}" method="post"
+          enctype="multipart/form-data">
+        <input type="hidden" name="_method" value="POST"/>
+        <input type="hidden" name="id" th:value="${id}"/>
+        <input type="file" required name="file" accept="image/*" id="fileInput" onchange="previewImage(event)"/>
+        <img id="preview" src="" alt="Preview"  class="preview-photo-block" />
+        <label for="fileInput">Choose File</label>
+        <button type="submit" class="form-button">Upload</button>
+    </form>
+</div>
+</div>
+<script>
+    function previewImage(event) {
+        var input = event.target;
+        var preview = document.getElementById('preview');
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+
+</body>
+</html>

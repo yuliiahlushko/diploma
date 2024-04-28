@@ -5,6 +5,7 @@
     font-size: 1em;
     display: flex;
     justify-content: space-between;
+    width: 100vw;
 
 
 }
@@ -25,7 +26,6 @@
 .left-buttons button:hover {
     background-color: #072a88;
 }
-
 
 
 .right-button button {

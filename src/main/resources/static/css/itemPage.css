@@ -26,20 +26,23 @@
     flex-wrap: wrap;
 
 }
+
 .photo-container {
-   width: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     margin: 2em 0.5em;
 
 
 }
+
 .bio-container {
 
     min-width: 50%;
     max-width: 50%;
 
 }
+
 .buttons {
     width: 90%
 }
@@ -76,9 +79,10 @@
     margin-bottom: 1.25em;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around ;
+    justify-content: space-around;
     align-items: flex-start;
     justify-items: stretch;
+    width: 100%;
 }
 
 .item-container h2 {
@@ -86,12 +90,17 @@
     font-weight: bold;
     margin-bottom: 0.9em;
     color: black;
+    width: 100%;
+    text-align: center;
 }
 
 .item-container h3 {
+    display: block;
     font-size: 1em;
     margin-bottom: 0.9em;
-    color: #cad6fd;
+    color: #00091e;
+    justify-content: center;
+
 }
 
 .form-button {

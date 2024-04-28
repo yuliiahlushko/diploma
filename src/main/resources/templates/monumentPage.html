@@ -7,6 +7,7 @@
     <link th:href="@{/css/header.css}" rel="stylesheet"/>
     <link th:href="@{/css/itemPage.css}" rel="stylesheet"/>
     <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diploma</title>
@@ -18,7 +19,7 @@
 <div class="body-container">
 
 
-    <div class="item-container" th:if="${user != null}">
+    <div class="item-container" th:if="${monument != null}">
 
 
         <div class="form-container photo-external-container">
@@ -26,27 +27,53 @@
 
                 <div class="photo">
 
-                    <img th:src="@{'data:image/png;base64,' + ${user.newImage}}" alt="Image">
+                    <img id="currentImage" class="gallery-image" src="" alt="Image">
 
+                </div>
+                <div class="navigation">
+                    <button id="prevButton" class="btn btn-primary"><</button>
+                    <button id="nextButton" class="btn btn-primary">></button>
                 </div>
             </div>
             <div class="buttons"
-                 th:if="${#authentication.principal != null and #authentication.principal.login == user.login}">
-                <button class="form-button" onclick="deletePhoto()">Delete photo</button>
-                <button class="form-button" onclick="editProfile()">Edit profile</button>
+                 th:if="${#authentication.principal != null }">
+                <form th:action="@{/web/monuments/{id}(id=${monument.id})}" method="post">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <input type="submit" value="Delete"/>
+                </form>
+                <button class="form-button" >
+                    <a th:href="@{/web/monuments/{monumentId}/edit(monumentId=${monument.id})}">Edit monument</a>
+                </button>
+                <button class="form-button" >
+                    <a th:href="@{/web/monuments/{monumentId}/editPhotos(monumentId=${monument.id})}">Edit photos</a>
+                </button>
+
             </div>
         </div>
 
         <div class="form-container bio-container">
-            <h2>Login</h2>
-            <h3><span th:if="${user.login} != null" th:text="${user.login}" th:unless="${user.login} == null">Not indicated</span>
+
+            <h2>Title</h2>
+            <h3><span th:if="${monument.title} != null" th:text="${monument.title}">Not indicated</span></h3>
+
+            <h2>Description</h2>
+            <h3><span th:if="${monument.description} != null" th:text="${monument.description}">Not indicated</span>
             </h3>
-            <h2> Email: </h2>
-            <h3><span th:if="${user.email} != null" th:text="${user.email}" th:unless="${user.email} == null">Not indicated</span>
+
+            <h2>Price</h2>
+            <h3><span th:if="${monument.price} != null" th:text="${monument.price}">Not indicated</span></h3>
+
+            <h2>Grade</h2>
+            <h3><span th:if="${monument.avgGrade} != null" th:text="${monument.avgGrade}">Not indicated</span></h3>
+
+            <h2>Created Date</h2>
+            <h3><span th:if="${monument.createdDate} != null" th:text="${monument.createdDate}">Not indicated</span>
             </h3>
-            <h2>Bio: </h2>
-            <h3><span th:if="${user.bio} != null" th:text="${user.bio}"
-                      th:unless="${user.bio} == null">Not indicated</span></h3>
+
+            <h2>City</h2>
+            <h3><span th:if="${monument.city} != null" th:text="${monument.city}">Not indicated</span></h3>
+
+
             <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
                 ewndsuk dhniew
                 eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
@@ -69,22 +96,33 @@
     </div>
 </div>
 
-<script>
-    function deletePhoto() {
-        fetch('/web/user/deletePhoto', {
-            method: 'DELETE'
-        })
-            .then(response => {
-                window.location.reload();
-            })
-            .catch(error => {
-                console.error('Помилка при видаленні фото:', error);
-            });
+<!-- Перемещение скрипта после загрузки jQuery -->
+<script th:inline="javascript">
+    /* Получение списка изображений */
+    var images = /*[[${images}]]*/ [];
+
+    var currentIndex = 0; // Индекс текущего изображения
+
+    /* Функция для обновления отображаемого изображения */
+    function updateImage() {
+        $('#currentImage').attr('src', 'data:image/png;base64,' + images[currentIndex].image);
     }
 
-    function editProfile() {
-        window.location.href = '/web/user';
-    }
+    /* Обработчик нажатия кнопки "Следующее" */
+    $('#nextButton').click(function () {
+        currentIndex = (currentIndex + 1) % images.length; // Переход к следующему изображению
+        updateImage(); // Обновление отображаемого изображения
+    });
+
+    /* Обработчик нажатия кнопки "Предыдущее" */
+    $('#prevButton').click(function () {
+        currentIndex = (currentIndex - 1 + images.length) % images.length; // Переход к предыдущему изображению
+        updateImage(); // Обновление отображаемого изображения
+    });
+
+    /* Инициализация отображаемого изображения */
+    updateImage();
 </script>
+
 </body>
 </html>

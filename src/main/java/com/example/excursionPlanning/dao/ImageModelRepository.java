@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,7 +20,7 @@ public interface ImageModelRepository extends JpaRepository<ImageModel, Long> {
     @Query("SELECT im FROM ImageModel im WHERE im.id = :id")
     Optional<ImageModel> getImageModelById(@Param("id") Long id);
     @Query("SELECT im FROM ImageModel im WHERE im.monumentId = :monumentId ")
-    Optional<ImageModel> getAllImageModelsByMonumentId(@Param("monumentId") Long monumentId);
+    List<ImageModel> getAllImageModelsByMonumentId(@Param("monumentId") Long monumentId);
 
     //Pageable
     @Query("SELECT im FROM ImageModel im WHERE im.monumentId = :monumentId ")

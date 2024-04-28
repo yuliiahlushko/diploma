@@ -1,0 +1,110 @@
+.body-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1.875em;
+    margin-top: 1.875em;
+    width: 95%;
+}
+
+
+.photo-edit-container {
+    background-color: #ea7f7f;
+    border-radius: 0.625em;
+    box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
+    padding: 1.875em;
+    margin-bottom: 1.875em;
+    margin-right: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.upload-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+
+}
+
+.upload-form form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%; /* Занимает половину экрана */
+    max-width: 50%; /* Максимальная ширина 50% экрана */
+}
+
+.upload-form input[type="file"] {
+    display: none;
+}
+
+.upload-form label {
+    width: 90%; /* Занимает всю ширину формы */
+    padding: 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: 5%;
+    transition: background-color 0.3s ease;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.upload-form label:hover {
+    background-color: #0056b3;
+}
+
+.upload-form button.form-button {
+    width: 100%; /* Занимает всю ширину формы */
+    padding: 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 20px; /* Закругляем углы */
+}
+
+.upload-form button.form-button:hover {
+    background-color: #218838;
+}
+
+
+/* Стили для кнопок удаления */
+/* Кнопка удаления */
+.delete-button {
+
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+.upload-photo-form{
+    width: 100%; /* Занимает всю ширину формы */
+    padding: 10%;
+    margin: 10%;
+    background-color: #9a28a7;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 10%; /* Закругляем углы */
+
+}
+.preview-photo-block{
+    min-width: 50%;
+    max-width: 50%;
+    min-height: 50%;
+    display: none;
+}

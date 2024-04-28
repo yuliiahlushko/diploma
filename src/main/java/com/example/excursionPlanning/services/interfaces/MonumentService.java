@@ -1,12 +1,10 @@
 package com.example.excursionPlanning.services.interfaces;
 
-import com.example.excursionPlanning.dto.ExceptionDTO;
 import com.example.excursionPlanning.dto.MonumentDTO;
 import com.example.excursionPlanning.entity.Monument;
+import com.example.excursionPlanning.paginationandsorting.PageSettings;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -16,7 +14,7 @@ import java.util.Optional;
 @Service
 public interface MonumentService {
 
-    Monument createMonument(MonumentDTO monumentDTO, Principal principal);
+    Optional<Monument> createMonument(MonumentDTO monumentDTO, Principal principal);
 
     void deleteMonument(Long id, Principal principal);
 
@@ -26,6 +24,10 @@ public interface MonumentService {
 
     Optional<Monument> patchMonument(MonumentDTO monumentDTO, Principal principal);
 
+
+    List<Monument> getAllMonuments();
+
+    List<Monument> getMonumentsByCity(String city);
 
     List<Monument> getMonumentByTitle(String title);
 
@@ -37,11 +39,15 @@ public interface MonumentService {
 
     //Pageable
 
-    Page<Monument> getMonumentsByTitle(String title, Pageable pageable);
+    List<Monument> getAllMonuments(PageSettings pageSetting);
 
-    Page<Monument> getMonumentsByPrice(Long minPrice, Long maxPrice, Pageable pageable);
+    List<Monument> getMonumentsByCity(String city,PageSettings pageSetting);
 
-    Page<Monument> getMonumentsByAvgGrade(Integer avgGrade, Pageable pageable);
+    List<Monument> getMonumentsByTitle(String title, PageSettings pageSetting);
 
-    Page<Monument> getMonumentsByExcursionId(Long excursionId, Pageable pageable);
+    List<Monument> getMonumentsByPrice(Long minPrice, Long maxPrice, PageSettings pageSetting);
+
+    List<Monument> getMonumentsByAvgGrade(Integer avgGrade, PageSettings pageSetting);
+
+    List<Monument> getMonumentsByExcursionId(Long excursionId, PageSettings pageSetting);
 }

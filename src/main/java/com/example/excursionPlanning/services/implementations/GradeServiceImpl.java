@@ -2,7 +2,6 @@ package com.example.excursionPlanning.services.implementations;
 
 import com.example.excursionPlanning.dao.GradeRepository;
 import com.example.excursionPlanning.dto.GradeDTO;
-import com.example.excursionPlanning.entity.Comment;
 import com.example.excursionPlanning.entity.Grade;
 import com.example.excursionPlanning.services.interfaces.GradeService;
 import org.slf4j.Logger;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -119,7 +119,7 @@ public class GradeServiceImpl implements GradeService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Grade> getAllGradesByMonumentId(Long monumentId) {
+    public List<Grade> getAllGradesByMonumentId(Long monumentId) {
         return gradeRepository.getAllGradesByMonumentId(monumentId);
     }
 

@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -21,6 +20,7 @@ public class Monument {
     private Long id;
     private String title;
     private String description;
+    private String city;
     private Integer price;
     private Integer avgGrade = 0;
 
@@ -43,7 +43,7 @@ public class Monument {
 
     @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
     @Column(updatable = false)
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     public Integer getAvgGrade() {
         return Math.toIntExact(Math.round(grades
@@ -55,7 +55,7 @@ public class Monument {
 
     @PrePersist
     protected void safeCreateTime() {
-        this.createDate = LocalDateTime.now();
+        this.createdDate = LocalDateTime.now();
 
 
     }

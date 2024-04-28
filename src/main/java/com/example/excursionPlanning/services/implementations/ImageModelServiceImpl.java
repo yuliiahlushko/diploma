@@ -1,11 +1,8 @@
 package com.example.excursionPlanning.services.implementations;
 
-import com.example.excursionPlanning.dao.CommentRepository;
 import com.example.excursionPlanning.dao.ImageModelRepository;
 import com.example.excursionPlanning.dto.ImageModelDTO;
-import com.example.excursionPlanning.entity.Grade;
 import com.example.excursionPlanning.entity.ImageModel;
-import com.example.excursionPlanning.entity.Monument;
 import com.example.excursionPlanning.services.interfaces.ImageModelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -111,7 +109,7 @@ public class ImageModelServiceImpl implements ImageModelService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ImageModel> getAllImageModelsByMonumentId(Long monumentId) {
+    public List<ImageModel> getAllImageModelsByMonumentId(Long monumentId) {
         return imageModelRepository.getAllImageModelsByMonumentId(monumentId);
     }
 

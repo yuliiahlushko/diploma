@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -115,7 +116,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Comment> getAllCommentsByMonumentId(Long monumentId) {
+    public List<Comment> getAllCommentsByMonumentId(Long monumentId) {
         return commentRepository.getAllCommentsByMonumentId(monumentId);
     }
 
