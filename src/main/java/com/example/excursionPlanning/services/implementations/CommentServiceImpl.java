@@ -1,6 +1,7 @@
 package com.example.excursionPlanning.services.implementations;
 
 import com.example.excursionPlanning.dao.CommentRepository;
+import com.example.excursionPlanning.dao.UserRepository;
 import com.example.excursionPlanning.dto.CommentDTO;
 import com.example.excursionPlanning.entity.Comment;
 import com.example.excursionPlanning.services.interfaces.CommentService;
@@ -24,16 +25,19 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
+    private  final UserRepository userRepository;
+
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public Comment createComment(CommentDTO commentDTO, Principal principal) {
         Comment comment = new Comment();
 
-        comment.setUserId(commentDTO.getUserId());
+        comment.setUserId(userRepository.getUserByEmail(principal.getName()).get().getId());
         comment.setUserLogin(commentDTO.getUserLogin());
         comment.setMessage(commentDTO.getMessage());
         comment.setMonument(commentDTO.getMonument());
@@ -67,7 +71,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<Comment> putComment(Comment commentDTO, Principal principal) {
+    public Optional<Comment> putComment(CommentDTO commentDTO, Principal principal) {
         Optional<Comment> comment = commentRepository.getCommentById(commentDTO.getId());
 
         if (comment.isPresent()) {
@@ -89,7 +93,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<Comment> patchComment(Comment commentDTO, Principal principal) {
+    public Optional<Comment> patchComment(CommentDTO commentDTO, Principal principal) {
         Optional<Comment> comment = commentRepository.getCommentById(commentDTO.getId());
 
         if (comment.isPresent()) {

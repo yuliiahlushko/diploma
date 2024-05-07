@@ -38,4 +38,15 @@ public class GradeDTO {
     @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
     private LocalDateTime createDate;
 
+    @Override
+    public String toString() {
+        return "GradeDTO{" +
+                "id=" + id +
+                ", monument=" + monument +
+                ", userId=" + userId +
+                ", login='" + login + '\'' +
+                ", grade=" + grade +
+                ", createDate=" + createDate +
+                '}';
+    }
 }

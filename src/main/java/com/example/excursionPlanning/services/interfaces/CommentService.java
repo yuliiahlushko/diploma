@@ -19,9 +19,9 @@ public interface CommentService {
 
     Optional<Comment> getCommentById(Long id, Principal principal);
 
-    Optional<Comment> putComment(Comment commentDTO, Principal principal);
+    Optional<Comment> putComment(CommentDTO commentDTO, Principal principal);
 
-    Optional<Comment> patchComment(Comment commentDTO, Principal principal);
+    Optional<Comment> patchComment(CommentDTO commentDTO, Principal principal);
 
     List<Comment> getAllCommentsByMonumentId(Long monumentId);
 

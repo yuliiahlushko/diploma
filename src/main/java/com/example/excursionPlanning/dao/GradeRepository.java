@@ -23,6 +23,10 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
     @Query("SELECT g FROM Grade g WHERE g.monument.id = :monumentId ORDER BY g.createDate DESC")
     List<Grade> getAllGradesByMonumentId(@Param("monumentId") Long monumentId);
 
+    @Query("SELECT g FROM Grade g WHERE g.userId = :userId AND g.monument.id = :monumentId ORDER BY g.createDate DESC")
+    Optional<Grade> getAllGradeByUserIdAAndMonumentId(@Param("monumentId") Long monumentId,
+                                                  @Param("userId") Long userId);
+
     //Pageable
     @Query("SELECT g FROM Grade g WHERE g.monument.id = :monumentId ORDER BY g.createDate DESC")
     Page<Grade> getAllGradesByMonumentId(@Param("monumentId") Long monumentId,

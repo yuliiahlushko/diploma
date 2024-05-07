@@ -1,19 +1,14 @@
 package com.example.excursionPlanning.controllers.web;
 
-import com.example.excursionPlanning.dto.ImageModelDTO;
-import com.example.excursionPlanning.dto.MonumentDTO;
-import com.example.excursionPlanning.dto.UserDTO;
+import com.example.excursionPlanning.dto.*;
+import com.example.excursionPlanning.entity.Comment;
+import com.example.excursionPlanning.entity.Grade;
 import com.example.excursionPlanning.entity.ImageModel;
 import com.example.excursionPlanning.entity.Monument;
-import com.example.excursionPlanning.facade.ImageModelFacadeResponse;
-import com.example.excursionPlanning.facade.MonumentFacade;
-import com.example.excursionPlanning.facade.MonumentRequestFacade;
-import com.example.excursionPlanning.facade.MonumentResponseFacade;
+import com.example.excursionPlanning.facade.*;
 import com.example.excursionPlanning.paginationandsorting.PageSettings;
 import com.example.excursionPlanning.payload.web.*;
-import com.example.excursionPlanning.services.interfaces.ImageModelService;
-import com.example.excursionPlanning.services.interfaces.MonumentService;
-import com.example.excursionPlanning.services.interfaces.UserService;
+import com.example.excursionPlanning.services.interfaces.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/web/monuments")
@@ -47,6 +43,15 @@ public class MonumentController {
 
     @Autowired
     private MonumentResponseFacade monumentResponseFacade;
+
+    @Autowired
+    private GradeService gradeService;
+
+    @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private CommentFacade commentFacade;
 
 
     @GetMapping(value = "/new")
@@ -166,8 +171,22 @@ public class MonumentController {
                 images = images.stream().skip(1).toList();
             }
 
+            List<CommentDTO> comments = commentService
+                    .getAllCommentsByMonumentId(Long.parseLong(id))
+                    .stream()
+                    .map(CommentFacade::convertCommentToCommentDTO)
+                    .toList();
 
+
+            Integer grade = 0;
+            if (gradeService.getGradeByUserIdAndMonumentId(Long.parseLong(id), principal).isPresent()) {
+                grade = gradeService.getGradeByUserIdAndMonumentId(Long.parseLong(id), principal)
+                        .get().getGrade();
+            }
             model.addAttribute("images", images);
+            model.addAttribute("comments", comments);
+            model.addAttribute("grade", grade);
+
 
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -266,5 +285,89 @@ public class MonumentController {
         monumentService.deleteMonument(Long.parseLong(id), principal);
         return "redirect:/web/user/profile";
     }
+
+    @PostMapping("/{monumentId}/addGrade")
+    public String addGrade(@PathVariable("monumentId") String monumentId,
+                           Principal principal, @RequestParam("rating") int rating) {
+
+        Optional<Grade> grade = gradeService.getGradeByUserIdAndMonumentId(Long.parseLong(monumentId), principal);
+
+        GradeDTO gradeDTO = new GradeDTO();
+        gradeDTO.setMonument(monumentService.getMonumentById(Long.parseLong(monumentId), principal)
+                .orElseThrow(() -> new RuntimeException("Monument not exist")));
+        gradeDTO.setGrade(rating);
+        gradeDTO.setLogin(principal.getName());
+
+        if (grade.isPresent()) {
+
+            gradeDTO.setId(grade.get().getId());
+            gradeService.patchGrade(gradeDTO, principal);
+
+        } else {
+
+            gradeService.createGrade(gradeDTO, principal);
+        }
+
+
+        return "redirect:/web/monuments/" + monumentId;
+    }
+
+    @PostMapping("/{monumentId}/addComment")
+    public String addComment(@PathVariable("monumentId") String monumentId,
+                             Principal principal, @RequestParam("message") String message) {
+
+        CommentDTO newComment = new CommentDTO();
+        newComment.setMonument(monumentService.getMonumentById(Long.parseLong(monumentId), principal)
+                .orElseThrow(() -> new RuntimeException("Monument not exist")));
+        newComment.setMessage(message);
+        newComment.setUserLogin(principal.getName());
+
+
+        commentService.createComment(newComment, principal);
+
+        return "redirect:/web/monuments/" + monumentId;
+    }
+
+    @PostMapping("/{monumentId}/editComment/{id}")
+    public String editComment(@PathVariable("monumentId") String monumentId,
+                              @PathVariable("id") String id,
+                              @RequestParam("message") String message,
+                              Principal principal) {
+
+        Optional<Comment> comm = commentService.getCommentById(Long.parseLong(id), principal);
+
+        if (comm.isPresent() && comm.get().getUserLogin().equals(principal.getName())) {
+
+            CommentDTO newComm = new CommentDTO();
+            newComm.setId(comm.get().getId());
+            newComm.setMonument(comm.get().getMonument());
+            newComm.setCreateDate(comm.get().getCreateDate());
+            newComm.setUserId(comm.get().getUserId());
+            newComm.setMessage(message);
+            newComm.setUserLogin(comm.get().getUserLogin());
+
+
+            commentService.patchComment(newComm, principal);
+        }
+
+        return "redirect:/web/monuments/" + monumentId;
+    }
+
+    @DeleteMapping("/{monumentId}/deleteComment/{id}")
+    public String deleteComment(@PathVariable("monumentId") String monumentId,
+                                @PathVariable("id") String id,
+                                Principal principal) {
+
+        Optional<Comment> comm = commentService.getCommentById(Long.parseLong(id), principal);
+
+        if (comm.isPresent() && comm.get().getUserLogin().equals(principal.getName())) {
+
+
+            commentService.deleteComment(Long.parseLong(id), principal);
+        }
+
+        return "redirect:/web/monuments/" + monumentId;
+    }
+
 
 }

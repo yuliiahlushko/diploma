@@ -19,11 +19,15 @@ public interface GradeService {
 
     Optional<Grade> getGradeById(Long id, Principal principal);
 
+    Optional<Grade> getGradeByUserIdAndMonumentId(Long monumentId, Principal principal);
+
     Optional<Grade> putGrade(GradeDTO gradeDTO, Principal principal);
 
     Optional<Grade> patchGrade(GradeDTO gradeDTO, Principal principal);
 
     List<Grade> getAllGradesByMonumentId(Long monumentId);
+
+
 
     //Pageable
     Page<Grade> getAllGradesByMonumentId(Long monumentId, Pageable pageable);

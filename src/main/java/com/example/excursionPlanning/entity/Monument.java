@@ -24,12 +24,15 @@ public class Monument {
     private Integer price;
     private Integer avgGrade = 0;
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "monument")
     private List<Grade> grades = new ArrayList<>();
 
 
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, orphanRemoval = true, mappedBy = "monument")
     private List<Comment> comments = new ArrayList<>();
+
 
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(name = "monument_excursion_table",

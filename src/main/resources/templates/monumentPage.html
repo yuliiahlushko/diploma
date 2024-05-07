@@ -23,28 +23,35 @@
 
 
         <div class="form-container photo-external-container">
+
+
             <div class="photo-container">
 
-                <div class="photo">
 
-                    <img id="currentImage" class="gallery-image" src="" alt="Image">
-
-                </div>
                 <div class="navigation">
                     <button id="prevButton" class="btn btn-primary"><</button>
+                    <div class="photo">
+
+                        <img id="currentImage" class="gallery-image" src="" alt="Image">
+
+                    </div>
+
                     <button id="nextButton" class="btn btn-primary">></button>
                 </div>
             </div>
-            <div class="buttons"
-                 th:if="${#authentication.principal != null }">
+
+            <div
+                    th:if="${#authentication.principal != null }">
+
                 <form th:action="@{/web/monuments/{id}(id=${monument.id})}" method="post">
                     <input type="hidden" name="_method" value="DELETE"/>
-                    <input type="submit" value="Delete"/>
+                    <input type="submit" class="form-button" value="Delete"/>
                 </form>
-                <button class="form-button" >
+
+                <button class="form-button">
                     <a th:href="@{/web/monuments/{monumentId}/edit(monumentId=${monument.id})}">Edit monument</a>
                 </button>
-                <button class="form-button" >
+                <button class="form-button">
                     <a th:href="@{/web/monuments/{monumentId}/editPhotos(monumentId=${monument.id})}">Edit photos</a>
                 </button>
 
@@ -73,28 +80,110 @@
             <h2>City</h2>
             <h3><span th:if="${monument.city} != null" th:text="${monument.city}">Not indicated</span></h3>
 
-
-            <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
-                ewndsuk dhniew
-                eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
-                wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
-            <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
-                ewndsuk dhniew
-                eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
-                wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
         </div>
 
         <div class="form-container down-container">
+            <div class="review_text">
+                <h2><span>Add grade and comments</span></h2>
+            </div>
+            <div class="container">
+                <form th:action="@{/web/monuments/{id}/addGrade(id=${monument.id})}" method="post" id="ratingForm">
+                    <div class="rating">
+                        <input type="radio" id="star10" name="rating" value="10" th:checked="${grade == 10}"
+                               onchange="submitForm()">
+                        <label for="star10">10</label>
+                        <input type="radio" id="star9" name="rating" value="9" th:checked="${grade == 9}"
+                               onchange="submitForm()">
+                        <label for="star9">9</label>
+                        <input type="radio" id="star8" name="rating" value="8" th:checked="${grade == 8}"
+                               onchange="submitForm()">
+                        <label for="star8">8</label>
+                        <input type="radio" id="star7" name="rating" value="7" th:checked="${grade == 7}"
+                               onchange="submitForm()">
+                        <label for="star7">7</label>
+                        <input type="radio" id="star6" name="rating" value="6" th:checked="${grade == 6}"
+                               onchange="submitForm()">
+                        <label for="star6">6</label>
+                        <input type="radio" id="star5" name="rating" value="5" th:checked="${grade == 5}"
+                               onchange="submitForm()">
+                        <label for="star5">5</label>
+                        <input type="radio" id="star4" name="rating" value="4" th:checked="${grade == 4}"
+                               onchange="submitForm()">
+                        <label for="star4">4</label>
+                        <input type="radio" id="star3" name="rating" value="3" th:checked="${grade == 3}"
+                               onchange="submitForm()">
+                        <label for="star3">3</label>
+                        <input type="radio" id="star2" name="rating" value="2" th:checked="${grade == 2}"
+                               onchange="submitForm()">
+                        <label for="star2">2</label>
+                        <input type="radio" id="star1" name="rating" value="1" th:checked="${grade == 1}"
+                               onchange="submitForm()">
+                        <label for="star1">1</label>
+                    </div>
+                </form>
+            </div>
+
+            <div class="review_form">
+                <form th:action="@{/web/monuments/{id}/addComment(id=${monument.id})}" method="post">
+
+                    <textarea id="message" name="message" rows="4" required></textarea>
+
+                    <button class="form-button" type="submit">Add</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="form-container down-container" th:if="${!comments.isEmpty()}">
+
+            <div class="review_text">
+                <h2><span>last comments</span></h2>
+            </div>
+            <div class="last_comments">
+
+                <div th:each="comment : ${comments}" class="comment-actions">
+
+                    <div th:if="${#authentication.getName() == comment.userLogin}">
+                        <button class="edit-comment">Edit</button>
+                    </div>
+
+                    <div class="comment">
+                        <div><h3 th:text="${comment.userLogin}"></h3></div>
+                        <div><p th:text="${comment.message}"></p></div>
+                    </div>
+
+                    <div th:if="${#authentication.getName() == comment.userLogin}">
+                        <form th:action="@{/web/monuments/{monumentId}/deleteComment/{id}(monumentId=${monument.id},id=${comment.id})}"
+                              method="post">
+                            <input type="hidden" name="_method" value="DELETE"/>
+
+                            <input type="submit" class="delete-comment" value="Delete">
+                        </form>
+
+                    </div>
 
 
-            <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
-                ewndsuk dhniew
-                eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
-                wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
+                    <div id="editModal" class="modal">
+                        <div class="modal-content">
+
+                            <form id="editForm"
+                                  th:action="@{/web/monuments/{monumentId}/editComment/{id}(monumentId=${monument.id},id=${comment.id})}"
+                                  method="post">
+                                <span class="close">&times;</span>
+                                <textarea id="editedText" name="message" rows="4" cols="50"></textarea>
+                                <input id="saveEdit" type="submit" class="edit-comment" value="Edit">
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
 
         </div>
     </div>
 </div>
+
 
 <!-- Перемещение скрипта после загрузки jQuery -->
 <script th:inline="javascript">
@@ -123,6 +212,47 @@
     /* Инициализация отображаемого изображения */
     updateImage();
 </script>
+<script>
+    // Получаем кнопки и модальное окно
+    var editBtns = document.querySelectorAll('.edit-comment');
+    var editModal = document.getElementById('editModal');
+    var closeBtn = document.querySelector('.close');
+    var saveBtn = document.getElementById('saveEdit');
+    var editedText = document.getElementById('editedText');
+    var id = document.getElementById('commentId');
 
+    // Перебираем все кнопки "Редактировать"
+    editBtns.forEach(function (button) {
+        // Назначаем обработчик события на каждую кнопку "Редактировать"
+        button.addEventListener('click', function () {
+            // Получаем текст комментария из атрибута data-comment-text
+            var commentText = this.parentNode.parentNode.querySelector('p').innerText.trim();
+
+
+            // Устанавливаем текст комментария в поле <textarea> модального окна
+            editedText.value = commentText;
+
+            // Открываем модальное окно
+            editModal.style.display = 'block';
+        });
+    });
+
+    // Закрываем модальное окно при нажатии на крестик
+    closeBtn.onclick = function () {
+        editModal.style.display = 'none';
+    }
+
+    // Закрываем модальное окно при клике вне окна
+    window.onclick = function (event) {
+        if (event.target == editModal) {
+            editModal.style.display = 'none';
+        }
+    }
+</script>
+<script>
+    function submitForm() {
+        document.getElementById("ratingForm").submit();
+    }
+</script>
 </body>
 </html>

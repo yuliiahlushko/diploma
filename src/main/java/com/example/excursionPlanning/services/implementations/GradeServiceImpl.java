@@ -1,6 +1,7 @@
 package com.example.excursionPlanning.services.implementations;
 
 import com.example.excursionPlanning.dao.GradeRepository;
+import com.example.excursionPlanning.dao.UserRepository;
 import com.example.excursionPlanning.dto.GradeDTO;
 import com.example.excursionPlanning.entity.Grade;
 import com.example.excursionPlanning.services.interfaces.GradeService;
@@ -24,9 +25,12 @@ public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public GradeServiceImpl(GradeRepository gradeRepository) {
+    public GradeServiceImpl(GradeRepository gradeRepository, UserRepository userRepository) {
         this.gradeRepository = gradeRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class GradeServiceImpl implements GradeService {
 
         grade.setGrade(gradeDTO.getGrade());
         grade.setMonument(gradeDTO.getMonument());
-        grade.setUserId(gradeDTO.getUserId());
+        grade.setUserId(userRepository.getUserByEmail(principal.getName()).get().getId());
         grade.setLogin(gradeDTO.getLogin());
 
         Grade savedGrade = null;
@@ -65,6 +69,12 @@ public class GradeServiceImpl implements GradeService {
     @Transactional(readOnly = true)
     public Optional<Grade> getGradeById(Long id, Principal principal) {
         return gradeRepository.getGradeById(id);
+    }
+
+    @Override
+    public Optional<Grade> getGradeByUserIdAndMonumentId(Long monumentId, Principal principal) {
+        return gradeRepository.getAllGradeByUserIdAAndMonumentId(monumentId,
+                userRepository.getUserByEmail(principal.getName()).get().getId());
     }
 
     @Override

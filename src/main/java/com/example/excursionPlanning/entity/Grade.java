@@ -1,10 +1,7 @@
 package com.example.excursionPlanning.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -20,6 +17,7 @@ public class Grade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.EAGER)
     private Monument monument;
 
