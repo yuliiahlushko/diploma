@@ -1,10 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link th:href="@{/css/body.css}" rel="stylesheet"/>
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/itemPage.css}" rel="stylesheet"/>
+    <link th:href="@{/css/monuments.css}" rel="stylesheet"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diploma</title>
 </head>
 <body>
+<head th:replace="~{header :: header}"></head>
 
+
+<div class="body-container">
+
+    <div class="body-title">
+        <h1>Monuments</h1>
+    </div>
+
+    <span th:if="${monuments.isEmpty()}">
+         <div class="body-title">
+        <h3>There are no monuments yet.<a th:href="@{/web/monuments/new}">You can add a new monument here</a></h3>
+           </div>
+
+        </span>
+    <div th:each="monument : ${monuments}" class="item-container">
+
+        <div class="form-container photo-external-container">
+
+            <div class="photo-container">
+
+                <div class="photo">
+
+                    <img id="currentImage" class="gallery-image" src="" alt="Image">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="form-container bio-container">
+
+            <a th:href="@{/web/monuments/{id}(id=${monument.id})}"><h2 th:if="${monument.title} != null" th:text="${monument.title}"></h2></a>
+
+            <h2>Price</h2>
+            <h3><span th:if="${monument.price} != null" th:text="${monument.price}">Not indicated</span></h3>
+
+
+            <h2>City</h2>
+            <h3><span th:if="${monument.city} != null" th:text="${monument.city}">Not indicated</span></h3>
+
+        </div>
+
+    </div>
+</div>
 </body>
 </html>

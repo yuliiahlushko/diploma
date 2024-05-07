@@ -90,7 +90,6 @@ public class MonumentController {
     }
 
     @GetMapping()
-    @ResponseBody
     public String getAllMonuments(@RequestParam(value = "page", required = false) Integer page,
                                   @RequestParam(value = "size", required = false) Integer size,
                                   @RequestParam(value = "city", required = false) String city,
@@ -110,7 +109,6 @@ public class MonumentController {
 
             model.addAttribute("monuments", monuments);
 
-            return monuments.get(0).getTitle();
 
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
