@@ -58,7 +58,7 @@ public class MonumentServiceImpl implements MonumentService {
             imageModel.setMonumentId(savedMonument.getId());
             imageModel.setImageBytes(new FileLoader().loadFileAsBytes("image-icon.jpg"));
 
-            imageModelService.createImageModel(imageModel,principal);
+            imageModelService.createImageModel(imageModel, principal);
         } catch (Exception e) {
             LOG.error("Monument {} cannot be created!", e.getMessage());
         }
@@ -171,6 +171,16 @@ public class MonumentServiceImpl implements MonumentService {
     @Transactional(readOnly = true)
     public List<Monument> getMonumentsByExcursionId(Long excursionId) {
         return monumentRepository.getMonumentsByExcursionId(excursionId);
+    }
+
+    @Override
+    public List<String> getAllCities() {
+        return monumentRepository
+                .getAllMonuments()
+                .stream()
+                .map((x) -> x.getCity())
+                .distinct()
+                .toList();
     }
 
     @Override

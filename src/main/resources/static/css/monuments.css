@@ -31,6 +31,7 @@
 
 
 .bio-container {
+    display: flex;
     text-align: start;
     justify-content: start;
     align-items: start;
@@ -52,6 +53,22 @@
 .form-container {
 
     box-shadow: none;
+}
 
+.category-city {
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 300px;
+    appearance: none;
+    background-color: #fff;
+    background-image: linear-gradient(45deg, #f9f9f9 50%, transparent 50%), linear-gradient(135deg, transparent 50%, #f9f9f9 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+    background-size: 5px 5px, 5px 5px, 1px 1.5em;
+    background-repeat: no-repeat;
+}
 
+.category-city option {
+    font-size: 1em;
 }

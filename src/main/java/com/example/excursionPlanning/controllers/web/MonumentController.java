@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,29 +90,86 @@ public class MonumentController {
 
     }
 
+    @ResponseBody
+    @GetMapping("/search")
+    public List<MonumentDTO> searchMonuments(@RequestParam(value = "query") String query) {
+
+
+        return monumentService
+                .getMonumentByTitle(query)
+                .stream()
+                .map(monumentFacade::convertMonumentToMonumentDTO)
+                .toList();
+
+    }
+
     @GetMapping()
     public String getAllMonuments(@RequestParam(value = "page", required = false) Integer page,
                                   @RequestParam(value = "size", required = false) Integer size,
                                   @RequestParam(value = "city", required = false) String city,
+                                  @RequestParam(value = "minPrice", required = false) String minPrice,
+                                  @RequestParam(value = "maxPrice", required = false) String maxPrice,
                                   Model model) {
-
+        System.out.println("jjjjjjjjjjjjjjjjjjjjjjj");
 
         try {
 
             PageSettings pageSettings = new PageSettings(page, size);
 
-            List<MonumentDTO> monuments = monumentService
-                    .getAllMonuments(pageSettings)
+            List<Monument> allMonuments = null;
+
+            if (city!=null) {
+
+                if (minPrice!=null || maxPrice!= null) {
+
+                    if (minPrice== null) minPrice = "0";
+                    if (maxPrice == null) maxPrice = "1000000";
+
+                    allMonuments = monumentService
+                            .getMonumentsByPrice(Long.parseLong(minPrice), Long.parseLong(maxPrice))
+                            .stream()
+                            .filter((x) -> x.getCity().equals(city))
+                            .toList();
+
+                } else {
+
+                    allMonuments = monumentService.getMonumentsByCity(city, pageSettings);
+                }
+
+
+            } else {
+                if (minPrice!=null || maxPrice!= null) {
+
+                    if (minPrice== null) minPrice = "0";
+                    if (maxPrice == null) maxPrice = "1000000";
+
+                    allMonuments = monumentService
+                            .getMonumentsByPrice(Long.parseLong(minPrice), Long.parseLong(maxPrice));
+
+                } else {
+
+                    allMonuments = monumentService.getAllMonuments(pageSettings);
+                    System.out.println("000");
+                }
+
+            }
+            System.out.println("qqqqqqqqqqqqqqqqqqqqq");
+            System.out.println(allMonuments);
+
+            List<MonumentDTO> monuments = allMonuments
                     .stream()
                     .map(monumentFacade::convertMonumentToMonumentDTO)
                     .toList();
 
 
             model.addAttribute("monuments", monuments);
+            model.addAttribute("cities", monumentService.getAllCities());
 
 
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
+            System.out.println("errrrrrrrror");
+            System.out.println(e.getMessage());
         }
         return "monuments";
     }

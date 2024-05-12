@@ -23,7 +23,7 @@ public interface MonumentRepository extends JpaRepository<Monument, Long> {
     @Query("SELECT m FROM Monument m order by m.avgGrade DESC")
     List<Monument> getAllMonuments();
 
-    @Query("SELECT m FROM Monument m WHERE m.title like :title order by m.avgGrade DESC")
+    @Query("SELECT m FROM Monument m WHERE m.title LIKE %:title% ORDER BY m.avgGrade DESC")
     List<Monument> getMonumentByTitle(@Param("title") String title);
 
     @Query("SELECT m FROM Monument m WHERE m.price <= :maxPrice AND m.price >= :minPrice ")

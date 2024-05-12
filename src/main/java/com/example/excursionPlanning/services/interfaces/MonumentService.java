@@ -37,6 +37,8 @@ public interface MonumentService {
 
     List<Monument> getMonumentsByExcursionId(Long excursionId);
 
+    List<String> getAllCities();
+
     //Pageable
 
     List<Monument> getAllMonuments(PageSettings pageSetting);

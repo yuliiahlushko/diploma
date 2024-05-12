@@ -5,6 +5,7 @@
     <link th:href="@{/css/header.css}" rel="stylesheet"/>
     <link th:href="@{/css/itemPage.css}" rel="stylesheet"/>
     <link th:href="@{/css/monuments.css}" rel="stylesheet"/>
+    <link th:href="@{/css/searchLine.css}" rel="stylesheet"/>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -27,6 +28,22 @@
            </div>
 
         </span>
+
+    <div class="panel">
+        <select name="city" class="category-city" onchange="handleSelectChange(this)">
+            <option th:value="'-1'"></option>
+            <th:block th:each="city : ${cities}">
+                <option th:value="${city}" th:text="${city}"></option>
+            </th:block>
+        </select>
+
+        <input type="text" id="searchInput" name="search" placeholder="enter the name">
+        <div id="searchResults" class="search-results"></div>
+
+        <input type="number" id="minPrice" name="minPrice" placeholder="Min Price">
+        <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price">
+
+    </div>
     <div th:each="monument : ${monuments}" class="item-container">
 
         <div class="form-container photo-external-container">
@@ -44,7 +61,8 @@
 
         <div class="form-container bio-container">
 
-            <a th:href="@{/web/monuments/{id}(id=${monument.id})}"><h2 th:if="${monument.title} != null" th:text="${monument.title}"></h2></a>
+            <a th:href="@{/web/monuments/{id}(id=${monument.id})}"><h2 th:if="${monument.title} != null"
+                                                                       th:text="${monument.title}"></h2></a>
 
             <h2>Price</h2>
             <h3><span th:if="${monument.price} != null" th:text="${monument.price}">Not indicated</span></h3>
@@ -57,5 +75,151 @@
 
     </div>
 </div>
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+
+    // Функция, которая будет отображать или скрывать результаты поиска
+    function toggleSearchResults(show) {
+        searchResults.style.display = show ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', function () {
+        const query = this.value.trim();
+
+        if (query.length === 0) {
+            toggleSearchResults(false);
+            return;
+        }
+
+        fetch(`/web/monuments/search?query=${query}`)
+            .then(response => response.json())
+            .then(monuments => {
+                searchResults.innerHTML = '';
+                if (monuments.length === 0) {
+                    searchResults.innerHTML = 'Ничего не найдено.';
+                } else {
+                    monuments.forEach(monument => {
+                        const monumentDiv = document.createElement('div');
+                        monumentDiv.classList.add('monument');
+                        monumentDiv.innerHTML = `
+    <a href="/web/monuments/${monument.id}"><p>${monument.title != null ? monument.title : ''}</p></a>
+    <p>${monument.description}</p>
+    <p>Цена: ${monument.price}</p>
+    <p>Город: ${monument.city}</p>
+    <p>Средняя оценка: ${monument.avgGrade}</p>
+    <p>Дата создания: ${new Date(monument.createdDate).toLocaleString()}</p>
+`;
+                        searchResults.appendChild(monumentDiv);
+                    });
+                }
+                toggleSearchResults(true);
+            })
+            .catch(error => {
+                console.error('Ошибка при выполнении запроса:', error);
+                searchResults.innerHTML = 'Ошибка при выполнении запроса.';
+                toggleSearchResults(true);
+            });
+    });
+
+    // Скрыть результаты поиска, если клик происходит за пределами поля ввода и результатов поиска
+    document.addEventListener('click', function (event) {
+        const targetElement = event.target;
+        if (targetElement !== searchInput && targetElement !== searchResults) {
+            toggleSearchResults(false);
+        }
+    });
+
+    function handleCityChange(select) {
+        const selectedCity = select.value;
+        const url = new URL(window.location.href);
+
+        if (selectedCity === "-1") {
+            url.searchParams.delete("city");
+        } else {
+            url.searchParams.set("city", selectedCity);
+        }
+
+        window.location.href = url.toString();
+    }
+
+    function getParameterByName(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    const minPriceInput = document.getElementById('minPrice');
+    const maxPriceInput = document.getElementById('maxPrice');
+
+    minPriceInput.addEventListener('input', updatePriceParams);
+    maxPriceInput.addEventListener('input', updatePriceParams);
+
+    function updatePriceParams() {
+        const minPrice = minPriceInput.value;
+        const maxPrice = maxPriceInput.value;
+        const url = new URL(window.location.href);
+
+        if (minPrice) {
+            url.searchParams.set("minPrice", minPrice);
+        } else {
+            url.searchParams.delete("minPrice");
+        }
+
+        if (maxPrice) {
+            url.searchParams.set("maxPrice", maxPrice);
+        } else {
+            url.searchParams.delete("maxPrice");
+        }
+
+        window.location.href = url.toString();
+    }
+
+    function setPriceInputsFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const minPrice = urlParams.get('minPrice');
+        const maxPrice = urlParams.get('maxPrice');
+
+        if (minPrice !== null) {
+            minPriceInput.value = minPrice;
+        }
+
+        if (maxPrice !== null) {
+            maxPriceInput.value = maxPrice;
+        }
+    }
+
+    setPriceInputsFromURL();
+</script>
+<script>
+    function handleSelectChange(select) {
+        const selectedCity = select.value;
+
+        const city = getParameterByName("city");
+        var url = new URL(window.location.href);
+
+
+        if (selectedCity == "-1") {
+            url.searchParams.delete("city");
+        } else {
+            url.searchParams.set("city", selectedCity);
+        }
+
+
+        if (city) {
+            url.searchParams.set("city", city);
+        }
+
+        window.location.href = url.toString();
+    }
+
+    function getParameterByName(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    var select = document.querySelector("select[name='city']");
+    var selectedCity = getParameterByName("city");
+    select.value = selectedCity;
+</script>
 </body>
 </html>
