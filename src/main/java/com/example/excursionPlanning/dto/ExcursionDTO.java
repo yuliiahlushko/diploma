@@ -1,7 +1,7 @@
 package com.example.excursionPlanning.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Lob;
+import com.example.excursionPlanning.entity.Monument;
+import jakarta.persistence.ElementCollection;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -12,12 +12,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExceptionDTO {
+public class ExcursionDTO {
 
     @NotNull
     private Long id;
@@ -29,10 +31,11 @@ public class ExceptionDTO {
     private String description;
 
     @NotNull
-    private Long guideId;
+    private String guideLogin;
 
     private Long price;
     private Long numberOfSeats;
+
 
     @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
     private LocalDateTime startTime;
@@ -41,9 +44,12 @@ public class ExceptionDTO {
     private LocalDateTime endTime;
 
     @Min(value = 0, message = "count of likes can/'t be less zero")
-    private Integer likes;
+    private Integer likes = 0;
 
     private byte[] image;
+
+    private List<Monument> monuments = null;
+
 
     @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
     private LocalDateTime createDate;

@@ -51,8 +51,7 @@ public class MonumentController {
     @Autowired
     private CommentService commentService;
 
-    @Autowired
-    private CommentFacade commentFacade;
+
 
 
     @GetMapping(value = "/new")
@@ -110,7 +109,6 @@ public class MonumentController {
                                   @RequestParam(value = "minPrice", required = false) String minPrice,
                                   @RequestParam(value = "maxPrice", required = false) String maxPrice,
                                   Model model) {
-        System.out.println("jjjjjjjjjjjjjjjjjjjjjjj");
 
         try {
 
@@ -149,12 +147,11 @@ public class MonumentController {
                 } else {
 
                     allMonuments = monumentService.getAllMonuments(pageSettings);
-                    System.out.println("000");
+
                 }
 
             }
-            System.out.println("qqqqqqqqqqqqqqqqqqqqq");
-            System.out.println(allMonuments);
+
 
             List<MonumentDTO> monuments = allMonuments
                     .stream()
@@ -168,7 +165,7 @@ public class MonumentController {
 
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
-            System.out.println("errrrrrrrror");
+
             System.out.println(e.getMessage());
         }
         return "monuments";

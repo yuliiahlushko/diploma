@@ -31,6 +31,9 @@ public class Excursion {
     private LocalDateTime endTime;
     private Integer likes;
 
+    @ElementCollection
+    private List<Long> likesUserId = new ArrayList<>();
+
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(name = "monument_excursion_table",
             joinColumns = @JoinColumn(name = "Monument_ID"),
@@ -40,7 +43,7 @@ public class Excursion {
 
 
     @Lob
-    private byte[] image ;
+    private byte[] image;
 
     @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
     @Column(updatable = false)

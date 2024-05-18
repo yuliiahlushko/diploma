@@ -1,11 +1,10 @@
 package com.example.excursionPlanning.services.interfaces;
 
-import com.example.excursionPlanning.dto.ExceptionDTO;
+import com.example.excursionPlanning.dto.ExcursionDTO;
 import com.example.excursionPlanning.entity.Excursion;
+import com.example.excursionPlanning.payload.web.ExcursionRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -17,17 +16,18 @@ import java.util.Optional;
 public interface ExcursionService {
 
 
-    Exception createException(ExceptionDTO exceptionDTO, Principal principal);
+    Optional<Excursion> createExcursion(ExcursionRequest excursion, Principal principal);
 
-    void deleteException(Long id, Principal principal);
+    void deleteExcursion(Long id, Principal principal);
 
-    Optional<Exception> getExceptionById(Long id, Principal principal);
-
-    Exception putException(ExceptionDTO exceptionDTO, Principal principal);
-
-    Exception patchException(ExceptionDTO exceptionDTO, Principal principal);
+    void like(Long id, Long userId);
 
 
+    Optional<Excursion> getExcursionById(Long id, Principal principal);
+
+    Optional<Excursion> putExcursion(ExcursionDTO excursionDTO, Principal principal);
+
+    Optional<Excursion> patchExcursion(ExcursionDTO excursionDTO, Principal principal);
 
 
     List<Excursion> getAllConductedExcursionsByUser(Long guideId);
