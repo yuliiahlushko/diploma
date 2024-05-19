@@ -52,8 +52,6 @@ public class MonumentController {
     private CommentService commentService;
 
 
-
-
     @GetMapping(value = "/new")
     public String getFormForCreateNewMonument(Model model) {
 
@@ -116,11 +114,11 @@ public class MonumentController {
 
             List<Monument> allMonuments = null;
 
-            if (city!=null) {
+            if (city != null) {
 
-                if (minPrice!=null || maxPrice!= null) {
+                if (minPrice != null || maxPrice != null) {
 
-                    if (minPrice== null) minPrice = "0";
+                    if (minPrice == null) minPrice = "0";
                     if (maxPrice == null) maxPrice = "1000000";
 
                     allMonuments = monumentService
@@ -136,9 +134,9 @@ public class MonumentController {
 
 
             } else {
-                if (minPrice!=null || maxPrice!= null) {
+                if (minPrice != null || maxPrice != null) {
 
-                    if (minPrice== null) minPrice = "0";
+                    if (minPrice == null) minPrice = "0";
                     if (maxPrice == null) maxPrice = "1000000";
 
                     allMonuments = monumentService
@@ -336,7 +334,7 @@ public class MonumentController {
     public String DeleteMonumentById(@PathVariable("id") String id, Principal principal) {
 
         monumentService.deleteMonument(Long.parseLong(id), principal);
-        return "redirect:/web/user/profile";
+        return "redirect:/web/monuments";
     }
 
     @PostMapping("/{monumentId}/addGrade")

@@ -20,7 +20,7 @@ public interface ExcursionService {
 
     void deleteExcursion(Long id, Principal principal);
 
-    void like(Long id, Long userId);
+    void like(Long id, Principal principal);
 
 
     Optional<Excursion> getExcursionById(Long id, Principal principal);

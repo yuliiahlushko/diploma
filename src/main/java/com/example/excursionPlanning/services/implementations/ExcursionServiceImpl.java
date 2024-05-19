@@ -85,10 +85,11 @@ public class ExcursionServiceImpl implements ExcursionService {
     }
 
     @Override
-    public void like(Long id, Long userId) {
+    public void like(Long id, Principal principal) {
 
         Excursion excursion = excursionRepository.getExcursionById(id)
                 .orElseThrow(() -> new RuntimeException("Excursion not exist"));
+        Long userId = userRepository.getUserByEmail(principal.getName()).get().getId();
         if (!excursion.getLikesUserId().contains(userId)) {
             excursion.setLikes(excursion.getLikes() + 1);
             excursion.getLikesUserId().add(userId);

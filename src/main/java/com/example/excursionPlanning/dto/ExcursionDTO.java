@@ -31,7 +31,7 @@ public class ExcursionDTO {
     private String description;
 
     @NotNull
-    private String guideLogin;
+    private Long guideId;
 
     private Long price;
     private Long numberOfSeats;
