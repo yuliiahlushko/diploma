@@ -1,10 +1,147 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <link th:href="@{/css/body.css}" rel="stylesheet"/>
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/itemPage.css}" rel="stylesheet"/>
+
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diploma</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Подключение вашего CSS файла -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 <body>
+<head th:replace="~{header :: header}"></head>
 
+<div class="body-container">
+    <div class="item-container" th:if="${excursion != null}">
+        <div class="form-container photo-external-container">
+            <div class="photo-container">
+                <div class="photo">
+                    <img th:src="@{'data:image/png;base64,' + ${excursion.image}}" alt="Image">
+                </div>
+            </div>
+            <div
+                    th:if="${#authentication.principal != null }">
+
+                <form th:action="@{/web/excursions/{excursionId}/deletePhoto(excursionId=${excursion.id})}"
+                      method="post">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <input type="submit" class="form-button" value="Delete photo"/>
+                </form>
+
+
+                <a th:href="@{/web/excursions/{excursionId}/edit(excursionId=${excursion.id})}">
+                    <button class="form-button">Edit</button>
+                </a>
+                <a th:href="@{/web/excursions/{id}/like(id=${excursion.id})}">
+                    <button class="form-button like-button">Like</button>
+                </a>
+
+
+            </div>
+        </div>
+
+        <div class="form-container bio-container"  >
+            <h2>Title</h2>
+            <h3><span th:if="${excursion.title} != null" th:text="${excursion.title}"
+                      th:unless="${excursion.title} == null">Not indicated</span></h3>
+            <h2>Description: </h2>
+            <h3><span th:if="${excursion.description} != null" th:text="${excursion.description}"
+                      th:unless="${excursion.description} == null">Not indicated</span></h3>
+            <h2>Guide: </h2>
+            <h3>
+                <a th:href="@{/web/user/{id}/profile(id=${guide.id})}">
+                    <span th:if="${guide.getLogin()} != null" th:text="${guide.getLogin()}"
+                          th:unless="${guide.getLogin()} == null">Not indicated</span>
+                </a>
+            </h3>
+            <h2>Price: </h2>
+            <h3><span th:if="${excursion.price} != null" th:text="${excursion.price}"
+                      th:unless="${excursion.price} == null">Not indicated</span></h3>
+            <h2>NumberOfSeats: </h2>
+            <h3><span th:if="${excursion.numberOfSeats} != null" th:text="${excursion.numberOfSeats}"
+                      th:unless="${excursion.numberOfSeats} == null">Not indicated</span></h3>
+            <h2>Start Time: </h2>
+            <h3><span th:if="${excursion.startTime} != null" th:text="${excursion.startTime}"
+                      th:unless="${excursion.startTime} == null">Not indicated</span></h3>
+            <h2>End Time: </h2>
+            <h3><span th:if="${excursion.endTime} != null" th:text="${excursion.endTime}"
+                      th:unless="${excursion.endTime} == null">Not indicated</span></h3>
+            <h2>Likes: </h2>
+            <h3><span th:if="${excursion.likes} != null" th:text="${excursion.likes}"
+                      th:unless="${excursion.likes} == null">Not indicated</span></h3>
+        </div>
+
+        <div class="form-container down-container" th:if="${!monuments.isEmpty()}">
+
+
+            <div th:each="monument : ${monuments}" class="item-container">
+
+                <div class="form-container photo-external-container">
+
+                    <div class="photo-container">
+
+                        <div class="photo">
+
+                            <img th:src="@{'data:image/png;base64,' + ${monument.image}}" alt="Image">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="form-container bio-container">
+
+                    <a th:href="@{/web/monuments/{id}(id=${monument.id})}"><h2 th:if="${monument.title} != null"
+                                                                               th:text="${monument.title}"></h2></a>
+
+                    <h2>Price</h2>
+                    <h3><span th:if="${monument.price} != null" th:text="${monument.price}">Not indicated</span></h3>
+
+
+                    <h2>City</h2>
+                    <h3><span th:if="${monument.city} != null" th:text="${monument.city}">Not indicated</span></h3>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function deletePhoto(button) {
+        const excursionId = button.getAttribute('data-excursion-id');
+        fetch('/web/excursions/' + excursionId + '/deletePhoto', {
+            method: 'DELETE'
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    return response.json().then(error => {
+                        throw new Error(error.message);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Помилка при видаленні фото:', error);
+            });
+    }
+
+    function editProfile(button) {
+        const excursionId = button.getAttribute('data-excursion-id');
+        window.location.href = '/web/excursions/' + excursionId + '/edit';
+    }
+</script>
 </body>
 </html>

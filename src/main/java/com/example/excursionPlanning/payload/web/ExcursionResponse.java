@@ -1,7 +1,6 @@
 package com.example.excursionPlanning.payload.web;
 
 import com.example.excursionPlanning.entity.Monument;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,10 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,8 +19,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExcursionRequest {
+public class ExcursionResponse {
 
+    @NotNull
+    private Long id;
 
     @Size(max = 60, message = "The maximum title size is 60 literals")
     private String title;
@@ -31,20 +30,29 @@ public class ExcursionRequest {
     @Size(max = 500, message = "The maximum description size is 500 literals")
     private String description;
 
+    @NotNull
+    private Long guideId;
 
     private Long price;
     private Long numberOfSeats;
 
-    @Future(message = "Must contain a date that has not yet arrived")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
+
+    @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
     private LocalDateTime startTime;
 
-    @Future(message = "Must contain a date that has not yet arrived")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
+    @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
     private LocalDateTime endTime;
 
-    private MultipartFile image;
+    @Min(value = 0, message = "count of likes can/'t be less zero")
+    private Integer likes = 0;
 
-    private List<Monument> monuments = new ArrayList<>();
+    private String image;
+
+    private List<Monument> monuments = null;
+
+
+    @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
+    private LocalDateTime createDate;
+
 
 }

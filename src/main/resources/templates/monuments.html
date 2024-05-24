@@ -52,7 +52,8 @@
 
                 <div class="photo">
 
-                    <img id="currentImage" class="gallery-image" src="" alt="Image">
+                    <img id="currentImage" th:src="@{'data:image/png;base64,' + ${monument.image}}" alt="Image">
+
                 </div>
 
             </div>

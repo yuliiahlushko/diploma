@@ -2,7 +2,6 @@ package com.example.excursionPlanning.payload.web;
 
 import com.example.excursionPlanning.entity.Monument;
 import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -22,9 +21,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExcursionRequest {
+public class ExcursionEditRequest {
 
-
+    @NotNull
+    private Long id;
     @Size(max = 60, message = "The maximum title size is 60 literals")
     private String title;
 
@@ -46,5 +46,6 @@ public class ExcursionRequest {
     private MultipartFile image;
 
     private List<Monument> monuments = new ArrayList<>();
+
 
 }

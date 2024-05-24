@@ -35,6 +35,8 @@ public class ImageModelServiceImpl implements ImageModelService {
         imageModel.setMonumentId(imageModelDTO.getMonumentId());
         imageModel.setImageBytes(imageModelDTO.getImageBytes());
 
+
+
         ImageModel savedImageModel = null;
 
         try {
@@ -59,7 +61,7 @@ public class ImageModelServiceImpl implements ImageModelService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<ImageModel> getImageModelById(Long id, Principal principal) {
+    public Optional<ImageModel> getImageModelById(Long id) {
         return imageModelRepository.getImageModelById(id);
     }
 

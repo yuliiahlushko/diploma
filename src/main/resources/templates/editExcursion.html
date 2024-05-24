@@ -1,10 +1,172 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/body.css}" rel="stylesheet"/>
+    <link th:href="@{/css/formStyle.css}" rel="stylesheet"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diploma</title>
 </head>
 <body>
+<head th:replace="~{header :: header}"></head>
+<div class="body-container">
+    <div class="form-container">
+        <div class="form-messages">
+
+            <div class="error form-error">
+                <span th:if="${error}" th:text="*{error}"></span>
+            </div>
+        </div>
+
+        <form th:action="@{/web/excursions}" th:object="${excursion}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="_method" value="PATCH"/>
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="item-container">
+                <div class="item-label"><label for="title">Title: </label></div>
+                <div class="item-input"><input type="text" id="title" th:field="*{title}" required/></div>
+                <div class="error item-error"><span th:if="${#fields.hasErrors('title')}" th:errorclass="error"
+                                                    th:errors="*{title}"></span></div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label"><label for="description">Description:</label></div>
+                <div class="item-input"><input type="text" id="description" th:field="*{description}"/></div>
+                <div class="error item-error"><span th:if="${#fields.hasErrors('description')}"
+                                                    th:errors="*{description}"></span></div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label"><label for="price">Price: </label></div>
+                <div class="item-input"><input type="number" step=".01" id="price" th:field="*{price}" required/></div>
+                <div class="error item-error"><span th:if="${#fields.hasErrors('price')}" th:errorclass="error"
+                                                    th:errors="*{price}"></span></div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label"><label for="numberOfSeats">NumberOfSeats:</label></div>
+                <div class="item-input"><input type="number" min="0" id="numberOfSeats" th:field="*{numberOfSeats}"/>
+                </div>
+                <div class="error item-error"><span th:if="${#fields.hasErrors('numberOfSeats')}"
+                                                    th:errors="*{numberOfSeats}"></span></div>
+            </div>
+            <div class="item-container">
+                <div class="item-label"><label for="startTime">StartTime:</label></div>
+                <div class="item-input"><input type="datetime-local" id="startTime" name="startTime"
+                                               th:field="*{startTime}"/></div>
+                <div class="item-error"><span th:if="${#fields.hasErrors('startTime')}" th:errorclass="error"
+                                              th:errors="*{startTime}"></span></div>
+            </div>
+            <div class="item-container">
+                <div class="item-label"><label for="endTime">EndTime:</label></div>
+                <div class="item-input"><input type="datetime-local" id="endTime" name="endTime"
+                                               th:field="*{endTime}"/></div>
+                <div class="item-error"><span th:if="${#fields.hasErrors('endTime')}" th:errorclass="error"
+                                              th:errors="*{endTime}"></span></div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label input-file"><label for="image">Upload image</label></div>
+                <div class="item-input"><input type="file" accept="image/*" style="display: none;" id="image"
+                                               name="image" onchange="previewImage(event)"/></div>
+                <div class="image-preview" id="imagePreviewContainer" style="display: none;">
+                    <img id="image-preview" src="#" alt="Image Preview"/>
+                </div>
+                <div class="item-error error">
+                    <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></span>
+                </div>
+            </div>
+
+            <div class="item-container">
+                <div class="item-label"><label for="monuments">Add monuments </label></div>
+                <select class="js-select2" id="monuments" name="monuments" multiple >
+
+                    <th:block th:each="monument : ${monuments}">
+                        <option th:value="${monument.id}" th:text="${monument.title}"
+                                th:selected="${excursion.getMonuments().contains(monument)}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+
+
+            <button class="form-button" type="submit">Edit</button>
+        </form>
+
+
+    </div>
+</div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('image-preview');
+            output.src = reader.result;
+            document.getElementById('imagePreviewContainer').style.display = 'block'; // Показуємо контейнер передпросмотру зображення
+        }
+        if (event.target.files.length > 0) {
+            reader.readAsDataURL(event.target.files[0]);
+        } else {
+            // Приховуємо контейнер передпросмотру зображення, якщо файл не обрано
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+        }
+    }
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('#monuments').select2({
+            ajax: {
+                url: '/web/monuments/search',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        query: params.term
+                    };
+                },
+                processResults: function (data) {
+                    // Преобразуйте полученные данные в формат, ожидаемый Select2
+                    var options = $.map(data, function (item) {
+                        return {id: item.id, text: item.title};
+                    });
+
+                    // Верните результаты обработки, которые будут отображены в Select2
+                    return {
+                        results: options
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2
+        });
+    });
+</script>
+
 
 </body>
 </html>

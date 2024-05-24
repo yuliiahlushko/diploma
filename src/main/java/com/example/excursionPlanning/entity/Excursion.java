@@ -31,6 +31,7 @@ public class Excursion {
     private LocalDateTime endTime;
     private Integer likes;
 
+
     @ElementCollection
     private List<Long> likesUserId = new ArrayList<>();
 
@@ -52,13 +53,7 @@ public class Excursion {
     @PrePersist
     protected void safeCreateTime() {
         this.createDate = LocalDateTime.now();
-        try {
-            this.image = new FileLoader().loadFileAsBytes("image-icon.jpg");
 
-            // Сохраняем массив байтов в поле объекта или переменную, где вам нужно будет использовать его
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 }

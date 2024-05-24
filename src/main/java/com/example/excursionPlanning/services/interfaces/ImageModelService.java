@@ -17,7 +17,7 @@ public interface ImageModelService {
 
     void deleteImageModel(Long id, Principal principal);
 
-    Optional<ImageModel> getImageModelById(Long id, Principal principal);
+    Optional<ImageModel> getImageModelById(Long id);
 
     Optional<ImageModel> putImageModel(ImageModelDTO imageModelDTO, Principal principal);
 

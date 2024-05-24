@@ -2,6 +2,7 @@ package com.example.excursionPlanning.services.interfaces;
 
 import com.example.excursionPlanning.dto.ExcursionDTO;
 import com.example.excursionPlanning.entity.Excursion;
+import com.example.excursionPlanning.payload.web.ExcursionEditRequest;
 import com.example.excursionPlanning.payload.web.ExcursionRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,11 +24,14 @@ public interface ExcursionService {
     void like(Long id, Principal principal);
 
 
-    Optional<Excursion> getExcursionById(Long id, Principal principal);
+    Optional<Excursion> getExcursionById(Long id);
 
     Optional<Excursion> putExcursion(ExcursionDTO excursionDTO, Principal principal);
 
-    Optional<Excursion> patchExcursion(ExcursionDTO excursionDTO, Principal principal);
+    public Optional<Excursion> deletePhoto(Long excursionId, Principal principal);
+
+    Optional<Excursion> patchExcursion(ExcursionEditRequest excursion, Principal principal);
+
 
 
     List<Excursion> getAllConductedExcursionsByUser(Long guideId);

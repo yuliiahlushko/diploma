@@ -4,6 +4,7 @@ import com.example.excursionPlanning.dao.ExcursionRepository;
 import com.example.excursionPlanning.dao.UserRepository;
 import com.example.excursionPlanning.dto.ExcursionDTO;
 import com.example.excursionPlanning.entity.Excursion;
+import com.example.excursionPlanning.payload.web.ExcursionEditRequest;
 import com.example.excursionPlanning.payload.web.ExcursionRequest;
 import com.example.excursionPlanning.services.FileLoader;
 import com.example.excursionPlanning.services.interfaces.ExcursionService;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,8 +59,13 @@ public class ExcursionServiceImpl implements ExcursionService {
         Excursion savedExcursion = null;
 
         try {
-            if (excursion.getImage() != null) newExcursion.setImage(excursion.getImage());
-            else newExcursion.setImage(new FileLoader().loadFileAsBytes("image-icon.jpg"));
+            if (!excursion.getImage().isEmpty()) {
+                newExcursion.setImage(excursion.getImage().getBytes());
+
+            } else {
+
+                newExcursion.setImage(new FileLoader().loadFileAsBytes("image-icon.jpg"));
+            }
             savedExcursion = excursionRepository.save(newExcursion);
 
 
@@ -85,6 +92,20 @@ public class ExcursionServiceImpl implements ExcursionService {
     }
 
     @Override
+    public Optional<Excursion> deletePhoto(Long excursionId, Principal principal) {
+
+        Excursion excursion = getExcursionById(excursionId).get();
+        try {
+
+            excursion.setImage(new FileLoader().loadFileAsBytes("image-icon.jpg"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.of(excursionRepository.save(excursion));
+    }
+
+    @Override
     public void like(Long id, Principal principal) {
 
         Excursion excursion = excursionRepository.getExcursionById(id)
@@ -101,7 +122,7 @@ public class ExcursionServiceImpl implements ExcursionService {
 
 
     @Override
-    public Optional<Excursion> getExcursionById(Long id, Principal principal) {
+    public Optional<Excursion> getExcursionById(Long id) {
         return excursionRepository.getExcursionById(id);
     }
 
@@ -136,8 +157,11 @@ public class ExcursionServiceImpl implements ExcursionService {
         return Optional.empty();
     }
 
+
+
+
     @Override
-    public Optional<Excursion> patchExcursion(ExcursionDTO excursion, Principal principal) {
+    public Optional<Excursion> patchExcursion(ExcursionEditRequest excursion, Principal principal) {
         Optional<Excursion> newExcursion = excursionRepository.getExcursionById(excursion.getId());
 
         if (newExcursion.isPresent()) {
@@ -161,10 +185,17 @@ public class ExcursionServiceImpl implements ExcursionService {
                 newExcursion.get().setEndTime(excursion.getEndTime());
 
 
-            if (excursion.getImage() != null)
-                newExcursion.get().setImage(excursion.getImage());
-            if (excursion.getMonuments() != null)
+            if (!excursion.getImage().isEmpty()) {
+                try {
+                    newExcursion.get().setImage(excursion.getImage().getBytes());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            if (excursion.getMonuments()!= null){
                 newExcursion.get().setMonuments(excursion.getMonuments());
+            }
 
 
             Excursion savedExcursion = null;

@@ -366,3 +366,30 @@
 #saveEdit:hover {
     background-color: #45a049; /* Темно-зеленый цвет при наведении */
 }
+
+/* styles.css */
+
+.like-button {
+    background-color: #ff5a5f; /* Красный цвет фона */
+    color: white; /* Белый цвет текста */
+    border: none; /* Убираем рамку */
+    padding: 10px 20px; /* Внутренние отступы */
+    font-size: 16px; /* Размер шрифта */
+    cursor: pointer; /* Курсор в виде указателя */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+}
+
+.like-button:hover {
+    background-color: #e0474c; /* Более тёмный оттенок красного при наведении */
+}
+
+.like-button:active {
+    background-color: #c9363b; /* Ещё более тёмный оттенок при нажатии */
+}
+
+/* Стили для контейнера кнопки */
+.like-button-container {
+    margin-top: 20px; /* Отступ сверху */
+    text-align: center; /* Центрирование содержимого */
+}

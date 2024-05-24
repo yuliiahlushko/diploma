@@ -31,7 +31,7 @@
                 <div class="navigation">
                     <button id="prevButton" class="btn btn-primary"><</button>
                     <div class="photo">
-
+v
                         <img id="currentImage" class="gallery-image" src="" alt="Image">
 
                     </div>
@@ -48,12 +48,20 @@
                     <input type="submit" class="form-button" value="Delete"/>
                 </form>
 
-                <button class="form-button">
-                    <a th:href="@{/web/monuments/{monumentId}/edit(monumentId=${monument.id})}">Edit monument</a>
-                </button>
-                <button class="form-button">
-                    <a th:href="@{/web/monuments/{monumentId}/editPhotos(monumentId=${monument.id})}">Edit photos</a>
-                </button>
+
+                <a th:href="@{/web/monuments/{monumentId}/edit(monumentId=${monument.id})}">
+                    <button class="form-button">
+                        Edit monument
+                    </button>
+                </a>
+
+
+                <a th:href="@{/web/monuments/{monumentId}/editPhotos(monumentId=${monument.id})}">
+                    <button class="form-button">
+                        Edit photos
+                    </button>
+                </a>
+
 
             </div>
         </div>

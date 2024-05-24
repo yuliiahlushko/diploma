@@ -51,6 +51,8 @@ public class MonumentController {
     @Autowired
     private CommentService commentService;
 
+    @Autowired
+    private MonumentExcursionResponseFacade monumentExcursionResponseFacade;
 
     @GetMapping(value = "/new")
     public String getFormForCreateNewMonument(Model model) {
@@ -151,9 +153,9 @@ public class MonumentController {
             }
 
 
-            List<MonumentDTO> monuments = allMonuments
+            List<MonumentExcursionResponse> monuments = allMonuments
                     .stream()
-                    .map(monumentFacade::convertMonumentToMonumentDTO)
+                    .map(monumentExcursionResponseFacade::convertMonumentDTOToMonumentExcursionResponse)
                     .toList();
 
 

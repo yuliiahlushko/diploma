@@ -18,7 +18,7 @@
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 
@@ -41,7 +41,7 @@
             </div>
         </div>
 
-        <form th:action="@{/web/excursions/new}" th:object="${excursion}" method="post">
+        <form th:action="@{/web/excursions/new}" th:object="${excursion}" method="post" enctype="multipart/form-data">
 
             <div class="item-container">
                 <div class="item-label"><label for="title">Title: </label></div>
@@ -87,8 +87,8 @@
             </div>
 
             <div class="item-container">
-                <div class="item-label input-file"><label for="newImage">Upload image</label></div>
-                <div class="item-input"><input type="file" accept="image/*" style="display: none;" id="newImage"
+                <div class="item-label input-file"><label for="image">Upload image</label></div>
+                <div class="item-input"><input type="file" accept="image/*" style="display: none;" id="image"
                                                name="image" onchange="previewImage(event)"/></div>
                 <div class="image-preview" id="imagePreviewContainer" style="display: none;">
                     <img id="image-preview" src="#" alt="Image Preview"/>
@@ -133,7 +133,7 @@
 
 </script>
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
         $('#monuments').select2({
             ajax: {
                 url: '/web/monuments/search',
@@ -146,8 +146,8 @@
                 },
                 processResults: function (data) {
                     // Преобразуйте полученные данные в формат, ожидаемый Select2
-                    var options = $.map(data, function(item) {
-                        return { id: item.id, text: item.title };
+                    var options = $.map(data, function (item) {
+                        return {id: item.id, text: item.title};
                     });
 
                     // Верните результаты обработки, которые будут отображены в Select2

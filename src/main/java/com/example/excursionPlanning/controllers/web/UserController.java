@@ -78,6 +78,25 @@ public class UserController {
 
     }
 
+    @GetMapping("/{id}/profile")
+    public String getUser(@PathVariable("id") String id,
+                          Principal principal,
+                          Model model) {
+        try {
+            UserProfileResponse user = userFacadeResponse.convertUserToUserFacadeResponse(userService.getUserById(Long.parseLong(id))
+                    .orElseThrow(() -> new RuntimeException("User not found")));
+
+            model.addAttribute("user", user);
+
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+
+        }
+
+        return "userPage";
+
+    }
+
 
     @PatchMapping()
     public String updateUser(@Valid @ModelAttribute("user") UpdateUserFormRequest user,
