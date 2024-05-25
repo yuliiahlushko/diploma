@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link th:href="@{/css/body.css}" rel="stylesheet"/>
+    <link th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link th:href="@{/css/itemPage.css}" rel="stylesheet"/>
+    <link th:href="@{/css/monuments.css}" rel="stylesheet"/>
+    <link th:href="@{/css/searchLine.css}" rel="stylesheet"/>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diploma</title>
+</head>
+<body>
+<head th:replace="~{header :: header}"></head>
+
+<div class="body-container">
+    <div class="body-title">
+        <h1>Excursions</h1>
+    </div>
+
+    <span th:if="${excursions == null || excursions.isEmpty()}">
+        <div class="body-title">
+            <h3>There are no excursions yet. <a th:href="@{/web/excursions/new}">You can add a new excursion here</a></h3>
+        </div>
+    </span>
+
+    <div class="panel">
+        <input type="text" id="searchInput" name="search" placeholder="Enter the name">
+        <div id="searchResults" class="search-results"></div>
+
+        <input type="datetime-local" id="startTime" name="startTime" placeholder="Start Time">
+        <input type="datetime-local" id="endTime" name="endTime" placeholder="End Time">
+        <input type="number" id="minPrice" name="minPrice" placeholder="Min Price">
+    </div>
+
+    <div th:each="excursion : ${excursions}" class="item-container">
+        <div class="form-container photo-external-container">
+            <div class="photo-container">
+                <div class="photo">
+                    <img id="currentImage" th:src="@{'data:image/png;base64,' + ${excursion.image}}" alt="Image">
+                </div>
+            </div>
+        </div>
+        <div class="form-container bio-container">
+            <a th:href="@{/web/excursions/{id}(id=${excursion.id})}">
+                <h2 th:if="${excursion.title} != null" th:text="${excursion.title}"></h2>
+            </a>
+            <h2>Price</h2>
+            <h3><span th:if="${excursion.price} != null" th:text="${excursion.price}">Not indicated</span></h3>
+            <h2>Start time</h2>
+            <h3><span th:if="${excursion.startTime} != null" th:text="${excursion.startTime}">Not indicated</span></h3>
+            <h2>End time</h2>
+            <h3><span th:if="${excursion.endTime} != null" th:text="${excursion.endTime}">Not indicated</span></h3>
+            <h2>Likes count</h2>
+            <h3><span th:if="${excursion.likes} != null" th:text="${excursion.likes}">Not indicated</span></h3>
+        </div>
+    </div>
+</div>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const startTimeInput = document.getElementById('startTime');
+    const endTimeInput = document.getElementById('endTime');
+    const minPriceInput = document.getElementById('minPrice');
+    const searchResults = document.getElementById('searchResults');
+
+    function toggleSearchResults(show) {
+        searchResults.style.display = show ? 'block' : 'none';
+    }
+
+    function updateURLParams() {
+        const query = searchInput.value.trim();
+        const startTime = startTimeInput.value;
+        const endTime = endTimeInput.value;
+        const minPrice = minPriceInput.value;
+
+        const url = new URL(window.location.href);
+
+        if (query) {
+            url.searchParams.set('query', query);
+        } else {
+            url.searchParams.delete('query');
+        }
+
+        if (startTime) {
+            url.searchParams.set('startTime', startTime);
+        } else {
+            url.searchParams.delete('startTime');
+        }
+
+        if (endTime) {
+            url.searchParams.set('endTime', endTime);
+        } else {
+            url.searchParams.delete('endTime');
+        }
+
+        if (minPrice) {
+            url.searchParams.set('price', minPrice);
+        } else {
+            url.searchParams.delete('price');
+        }
+
+        localStorage.setItem('searchParams', JSON.stringify({
+            query: query,
+            startTime: startTime,
+            endTime: endTime,
+            minPrice: minPrice
+        }));
+
+        window.location.href = url.toString();
+    }
+
+    function loadSearchParams() {
+        const params = JSON.parse(localStorage.getItem('searchParams'));
+        if (params) {
+            if (params.query) searchInput.value = params.query;
+            if (params.startTime) startTimeInput.value = params.startTime;
+            if (params.endTime) endTimeInput.value = params.endTime;
+            if (params.minPrice) minPriceInput.value = params.minPrice;
+        }
+    }
+
+    function performSearch() {
+        const query = searchInput.value.trim();
+        const startTime = startTimeInput.value;
+        const endTime = endTimeInput.value;
+        const minPrice = minPriceInput.value;
+
+        fetch(`/web/excursions/search?query=${encodeURIComponent(query)}&startTime=${encodeURIComponent(startTime)}&endTime=${encodeURIComponent(endTime)}&price=${encodeURIComponent(minPrice)}`)
+            .then(response => response.json())
+            .then(excursions => {
+                searchResults.innerHTML = '';
+                if (excursions.length === 0) {
+                    searchResults.innerHTML = 'No results found.';
+                } else {
+                    excursions.forEach(excursion => {
+                        const excursionDiv = document.createElement('div');
+                        excursionDiv.classList.add('excursion');
+                        excursionDiv.innerHTML = `
+                            <a href="/web/excursions/${excursion.id}">
+                                <p>${excursion.title || ''}</p>
+                            </a>
+                            <p>Price: ${excursion.price}</p>
+                            <p>Start Time: ${new Date(excursion.startTime).toLocaleString()}</p>
+                            <p>End Time: ${new Date(excursion.endTime).toLocaleString()}</p>
+                            <p>Likes: ${excursion.likes}</p>
+                        `;
+                        searchResults.appendChild(excursionDiv);
+                    });
+                }
+                toggleSearchResults(true);
+            })
+            .catch(error => {
+                console.error('Error during the request:', error);
+                searchResults.innerHTML = 'Error during the request.';
+                toggleSearchResults(true);
+            });
+    }
+
+    searchInput.addEventListener('input', performSearch);
+    startTimeInput.addEventListener('input', updateURLParams);
+    endTimeInput.addEventListener('input', updateURLParams);
+    minPriceInput.addEventListener('input', updateURLParams);
+
+    document.addEventListener('click', function (event) {
+        const targetElement = event.target;
+        if (targetElement !== searchInput && targetElement !== searchResults &&
+            targetElement !== startTimeInput && targetElement !== endTimeInput &&
+            targetElement !== minPriceInput) {
+            toggleSearchResults(false);
+        }
+    });
+
+    loadSearchParams();
+</script>
+
+</body>
+</html>

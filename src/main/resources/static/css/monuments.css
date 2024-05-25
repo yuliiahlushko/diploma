@@ -30,22 +30,16 @@
 }
 
 
-.bio-container {
-    display: flex;
-    text-align: start;
-    justify-content: start;
-    align-items: start;
 
-}
 
 .item-container h2 {
     font-size: 1em;
-
+    margin-top: 2.5em;
 
 }
 
 .item-container h3 {
-    margin-top: 2.5em;
+
     font-size: 0.8em;
 
 }

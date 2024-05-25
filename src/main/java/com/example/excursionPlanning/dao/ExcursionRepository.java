@@ -22,14 +22,14 @@ public interface ExcursionRepository extends JpaRepository<Excursion, Long> {
     @Query("SELECT e FROM Excursion e WHERE e.id = :id")
     Optional<Excursion> getExcursionById(@Param("id") Long id);
 
-    @Query("SELECT e FROM Excursion e WHERE e.title like :title ORDER BY e.likes DESC")
+    @Query("SELECT e FROM Excursion e WHERE e.title like %:title% ORDER BY e.likes DESC")
     List<Excursion> getExcursionsByTitle(@Param("title") String title);
 
     @Query("SELECT e FROM Excursion e WHERE e.price <= :maxPrice AND e.price >= :minPrice ORDER BY e.likes DESC")
     List<Excursion> getExcursionsByPrice(@Param("minPrice") Long minPrice,
                                          @Param("maxPrice") Long maxPrice);
 
-    @Query("SELECT e FROM Excursion e WHERE e.startTime >= :startTime AND e.endTime <= :endTime ORDER BY e.createDate DESC")
+    @Query("SELECT e FROM Excursion e WHERE e.startTime  >= :startTime AND e.endTime <=:endTime ORDER BY e.createDate DESC")
     List<Excursion> getExcursionsByTime(@Param("startTime") LocalDateTime startTime,
                                         @Param("endTime") LocalDateTime endTime);
 

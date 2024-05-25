@@ -5,6 +5,7 @@ import com.example.excursionPlanning.dto.MonumentDTO;
 import com.example.excursionPlanning.entity.Excursion;
 import com.example.excursionPlanning.entity.Monument;
 import com.example.excursionPlanning.facade.*;
+import com.example.excursionPlanning.paginationandsorting.PageSettings;
 import com.example.excursionPlanning.payload.web.*;
 import com.example.excursionPlanning.services.interfaces.ExcursionService;
 import com.example.excursionPlanning.services.interfaces.ImageModelService;
@@ -12,12 +13,17 @@ import com.example.excursionPlanning.services.interfaces.MonumentService;
 import com.example.excursionPlanning.services.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +48,7 @@ public class ExcursionController {
     private ExcursionFacade excursionFacade;
 
     @Autowired
-    private MonumentFacade monumentFacade;
+    private ExcursionsResponseFacade excursionsResponseFacade;
 
     @Autowired
     private ExcursionResponseFacade excursionResponseFacade;
@@ -98,10 +104,79 @@ public class ExcursionController {
     }
 
     @GetMapping()
-    @ResponseBody
-    public String getAllExcursion(Model model) {
+    public String getAllExcursion(@RequestParam(value = "page", required = false) Integer page,
+                                  @RequestParam(value = "size", required = false) Integer size,
+                                  @RequestParam(value = "price", required = false) String price,
+                                  @RequestParam(value = "startTime", required = false)
+                                  @DateTimeFormat(pattern = "HH:mm:ss dd-MM-yyyy") LocalDateTime startTime,
+                                  @RequestParam(value = "endTime", required = false)
+                                  @DateTimeFormat(pattern = "HH:mm:ss dd-MM-yyyy") LocalDateTime endTime,
+                                  Model model) {
+System.out.println("gggggggggggggggggggg");
+System.out.println(price);
+System.out.println(startTime);
+System.out.println(endTime);
+        try {
 
-        return "hello";
+            PageSettings pageSettings = new PageSettings(page, size);
+            Pageable pageable = PageRequest.of(pageSettings.getPage(), pageSettings.getSize());
+
+
+            List<Excursion> allExcursions = null;
+
+
+            if (price != null && !price.isEmpty()) {
+
+                if (startTime != null || endTime != null) {
+
+                    if (startTime == null) startTime = LocalDateTime.now();
+                    if (endTime == null) endTime = LocalDateTime.now().plusYears(1);
+
+                    allExcursions = excursionService
+                            .getExcursionsByTime(startTime, endTime, pageable)
+                            .stream()
+                            .filter((x) -> x.getPrice() <= Long.parseLong(price))
+                            .collect(Collectors.toList());
+
+
+                } else {
+
+                    allExcursions = excursionService.getExcursionsByPrice(0L, Long.parseLong(price), pageable)
+                            .stream().toList();
+                }
+
+
+            } else {
+
+
+                if (startTime == null) startTime = LocalDateTime.now().minusYears(1);
+                if (endTime == null) endTime = LocalDateTime.now().plusYears(1);
+
+
+                allExcursions = excursionService
+                        .getExcursionsByTime(startTime, endTime)
+                        .stream().toList();
+
+
+            }
+            System.out.println(allExcursions);
+
+
+            List<ExcursionsResponse> excursions = allExcursions
+                    .stream()
+                    .map(excursionsResponseFacade::convertExcursionToExcursionsResponse)
+                    .toList();
+
+            System.out.println(excursions);
+            model.addAttribute("excursions", excursions);
+
+
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+
+
+        }
+        return "excursions";
     }
 
     @PatchMapping()
@@ -153,81 +228,6 @@ public class ExcursionController {
         return "editExcursion";
 
     }
-
-//    @GetMapping(value = "/{id}/editMonumentsList")
-//    public String editeMonumentsList(@PathVariable("id") String id,
-//                                     Principal principal,
-//                                     Model model) {
-//        Excursion excursion = null;
-//        try {
-//            excursion = excursionService
-//                    .getExcursionById(Long.parseLong(id))
-//                    .orElseThrow(() -> new RuntimeException("Excursion not updated"));
-//
-//        } catch (Exception e) {
-//            model.addAttribute("error", e.getMessage());
-//        }
-//
-//        MonumentListEdit monumentListEdit = new MonumentListEdit();
-//        monumentListEdit.setId(Long.parseLong(id));
-//        monumentListEdit.setMonuments(excursion.getMonuments());
-//
-//        model.addAttribute("monumentList", monumentListEdit);
-//        model.addAttribute("monuments", monumentService.getAllMonuments());
-//        return "editMonumentsList";
-//
-//    }
-//
-//    @PostMapping(value = "/{id}/editMonumentsList")
-//    public String editeMonumentsListPost(@PathVariable("id") String id,
-//                                         Principal principal,
-//                                         Model model) {
-//        ExcursionDTO excursion = null;
-//        try {
-//            excursion = ExcursionFacade
-//                    .convertExcursionToExcursionDTO(excursionService
-//                            .getExcursionById(Long.parseLong(id))
-//                            .orElseThrow(() -> new RuntimeException("Excursion not updated")));
-//
-//        } catch (Exception e) {
-//            model.addAttribute("error", e.getMessage());
-//        }
-//        model.addAttribute("excursion", excursion);
-//        return "editMonumentsList";
-//
-//    }
-//
-//    @DeleteMapping("/{excursionId}/deleteMonument/{monumentId}")
-//    public String DeleteMonumentInExcursion(@PathVariable("excursionId") String excursionId,
-//                                            Principal principal,
-//                                            @PathVariable("monumentId") String monumentId,
-//                                            Model model) {
-//
-//
-//        Excursion excursion = null;
-//        try {
-//            excursion = excursionService
-//                    .getExcursionById(Long.parseLong(excursionId))
-//                    .orElseThrow(() -> new RuntimeException("Excursion not updated"));
-//
-//            MonumentListEdit monumentList = new MonumentListEdit();
-//            monumentList.setId(Long.parseLong(excursionId));
-//
-//            monumentList.setMonuments(excursion
-//                    .getMonuments()
-//                    .stream()
-//                    .filter(x -> !x.getId().equals(Long.parseLong(monumentId)))
-//                    .collect(Collectors.toList()));
-//
-//            excursionService.putMonumentsToExcursion(monumentList, principal);
-//
-//
-//        } catch (Exception e) {
-//            model.addAttribute("error", e.getMessage());
-//        }
-//        return "redirect:/web/excursions/" + excursionId + "/editMonumentsList";
-//
-//    }
 
     @DeleteMapping("/{id}")
     public String DeleteExcursionById(@PathVariable("id") String id, Principal principal) {
@@ -300,5 +300,19 @@ public class ExcursionController {
 
     }
 
+    @ResponseBody
+    @GetMapping("/search")
+    public List<ExcursionsResponse> searchMonuments(@RequestParam(value = "query") String query) {
+
+
+        return
+                excursionService
+                        .getExcursionsByTitle(query)
+                        .stream()
+                        .map(excursionsResponseFacade::convertExcursionToExcursionsResponse)
+                        .toList();
+
+
+    }
 
 }
