@@ -25,13 +25,18 @@
                     <img th:src="@{'data:image/png;base64,' + ${excursion.image}}" alt="Image">
                 </div>
             </div>
-            <div
-                    th:if="${#authentication.principal != null }">
+            <div th:if="${#authentication.principal != null and hasAbility}">
 
                 <form th:action="@{/web/excursions/{excursionId}/deletePhoto(excursionId=${excursion.id})}"
                       method="post">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <input type="submit" class="form-button" value="Delete photo"/>
+                </form>
+
+                <form th:action="@{/web/excursions/{excursionId}(excursionId=${excursion.id})}"
+                      method="post">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <input type="submit" class="form-button" value="Delete"/>
                 </form>
 
 
@@ -56,8 +61,8 @@
             <h2>Guide: </h2>
             <h3>
                 <a th:href="@{/web/user/{id}/profile(id=${guide.id})}">
-                    <span th:if="${guide.getLogin()} != null" th:text="${guide.getLogin()}"
-                          th:unless="${guide.getLogin()} == null">Not indicated</span>
+                    <span th:if="${guide.getLogin()} != null" th:text="${guide.getLogin()}"></span>
+                    <span th:if="${guide.getLogin()} == null" th:text="${guide.getEmail()}"></span>
                 </a>
             </h3>
             <h2>Price: </h2>

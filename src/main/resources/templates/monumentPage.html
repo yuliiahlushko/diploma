@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"></html>
+<html xmlns:th="http://www.thymeleaf.org" ></html>
 <html lang="en">
 <head>
 
@@ -40,9 +40,8 @@ v
                 </div>
             </div>
 
-            <div
-                    th:if="${#authentication.principal != null }">
 
+            <div th:if="${#authentication.principal != null and isUser}">
                 <form th:action="@{/web/monuments/{id}(id=${monument.id})}" method="post">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <input type="submit" class="form-button" value="Delete"/>
@@ -185,6 +184,37 @@ v
                 </div>
 
 
+            </div>
+
+        </div>
+        <div class="form-container down-container" th:if="${excursions != null && !excursions.isEmpty()}">
+
+            <h2>The last excursions with this monument</h2>
+
+            <div th:each="excursion : ${excursions}" class="item-container">
+                <div class="form-container photo-external-container">
+                    <div class="photo-container">
+                        <div class="photo">
+                            <img id="currenImage" th:src="@{'data:image/png;base64,' + ${excursion.image}}"
+                                 alt="Image">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-container bio-container">
+                    <a th:href="@{/web/excursions/{id}(id=${excursion.id})}">
+                        <h2 th:if="${excursion.title} != null" th:text="${excursion.title}"></h2>
+                    </a>
+                    <h2>Price</h2>
+                    <h3><span th:if="${excursion.price} != null" th:text="${excursion.price}">Not indicated</span></h3>
+                    <h2>Start time</h2>
+                    <h3><span th:if="${excursion.startTime} != null"
+                              th:text="${excursion.startTime}">Not indicated</span></h3>
+                    <h2>End time</h2>
+                    <h3><span th:if="${excursion.endTime} != null" th:text="${excursion.endTime}">Not indicated</span>
+                    </h3>
+                    <h2>Likes count</h2>
+                    <h3><span th:if="${excursion.likes} != null" th:text="${excursion.likes}">Not indicated</span></h3>
+                </div>
             </div>
 
         </div>

@@ -47,23 +47,38 @@
             <h2>Bio: </h2>
             <h3><span th:if="${user.bio} != null" th:text="${user.bio}"
                       th:unless="${user.bio} == null">Not indicated</span></h3>
-            <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
-                ewndsuk dhniew
-                eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
-                wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
-            <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
-                ewndsuk dhniew
-                eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
-                wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
+
         </div>
 
-        <div class="form-container down-container">
+        <div class="form-container down-container" th:if="${excursions != null && !excursions.isEmpty()}">
 
+            <h2>The last excursions by this user</h2>
 
-            <h2>wpoihjhjok;gkjfgiujo;klk.ghhukbdxkjn lkejwsikh ewkjdo iwlhdniuehsg bduyjwshdnoc uehedpekhgs edioh
-                ewndsuk dhniew
-                eiwjsndokjew hsndioukxhewd ukj ewhsiukwehsfn iuckjehdsnoi kfjchewndsukjdhxnwe ukj ew eiwwshjfoh ewkds
-                wejas doc hsdnxi kdnewoszh fnciw sbdnxkewjhxo ewkjsjdm nj hdsjhhdbcjhs rdshjdnkdsndfcekjdsdfff </h2>
+            <div th:each="excursion : ${excursions}" class="item-container">
+                <div class="form-container photo-external-container">
+                    <div class="photo-container">
+                        <div class="photo">
+                            <img id="currentImage" th:src="@{'data:image/png;base64,' + ${excursion.image}}"
+                                 alt="Image">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-container bio-container">
+                    <a th:href="@{/web/excursions/{id}(id=${excursion.id})}">
+                        <h2 th:if="${excursion.title} != null" th:text="${excursion.title}"></h2>
+                    </a>
+                    <h2>Price</h2>
+                    <h3><span th:if="${excursion.price} != null" th:text="${excursion.price}">Not indicated</span></h3>
+                    <h2>Start time</h2>
+                    <h3><span th:if="${excursion.startTime} != null"
+                              th:text="${excursion.startTime}">Not indicated</span></h3>
+                    <h2>End time</h2>
+                    <h3><span th:if="${excursion.endTime} != null" th:text="${excursion.endTime}">Not indicated</span>
+                    </h3>
+                    <h2>Likes count</h2>
+                    <h3><span th:if="${excursion.likes} != null" th:text="${excursion.likes}">Not indicated</span></h3>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -75,16 +90,19 @@
             method: 'DELETE'
         })
             .then(response => {
-                        window.location.reload();
+                window.location.reload();
             })
             .catch(error => {
                 console.error('Помилка при видаленні фото:', error);
             });
     }
 
+
     function editProfile() {
         window.location.href = '/web/user';
     }
 </script>
+
+
 </body>
 </html>

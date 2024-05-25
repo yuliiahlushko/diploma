@@ -4,6 +4,7 @@ import com.example.excursionPlanning.dto.ExcursionDTO;
 import com.example.excursionPlanning.dto.MonumentDTO;
 import com.example.excursionPlanning.entity.Excursion;
 import com.example.excursionPlanning.entity.Monument;
+import com.example.excursionPlanning.entity.enums.Role;
 import com.example.excursionPlanning.facade.*;
 import com.example.excursionPlanning.paginationandsorting.PageSettings;
 import com.example.excursionPlanning.payload.web.*;
@@ -75,6 +76,9 @@ public class ExcursionController {
         }
         Excursion excursion = null;
         try {
+            if (excursionRequest.getEndTime().isAfter(excursionRequest.getStartTime())) {
+                throw (new RuntimeException("Start time cant be after end time"));
+            }
             excursion = excursionService.createExcursion(excursionRequest, principal)
                     .orElseThrow(() -> new RuntimeException("Excursion can't be created"));
 
@@ -112,10 +116,7 @@ public class ExcursionController {
                                   @RequestParam(value = "endTime", required = false)
                                   @DateTimeFormat(pattern = "HH:mm:ss dd-MM-yyyy") LocalDateTime endTime,
                                   Model model) {
-System.out.println("gggggggggggggggggggg");
-System.out.println(price);
-System.out.println(startTime);
-System.out.println(endTime);
+
         try {
 
             PageSettings pageSettings = new PageSettings(page, size);
@@ -154,12 +155,11 @@ System.out.println(endTime);
 
 
                 allExcursions = excursionService
-                        .getExcursionsByTime(startTime, endTime)
+                        .getExcursionsByTime(startTime, endTime, pageable)
                         .stream().toList();
 
 
             }
-            System.out.println(allExcursions);
 
 
             List<ExcursionsResponse> excursions = allExcursions
@@ -167,7 +167,6 @@ System.out.println(endTime);
                     .map(excursionsResponseFacade::convertExcursionToExcursionsResponse)
                     .toList();
 
-            System.out.println(excursions);
             model.addAttribute("excursions", excursions);
 
 
@@ -188,7 +187,9 @@ System.out.println(endTime);
         if (bindingResult.hasErrors()) {
             return "editExcursion";
         }
-
+        if (excursion.getEndTime().isAfter(excursion.getStartTime())) {
+            throw (new RuntimeException("Start time cant be after end time"));
+        }
         ExcursionDTO savedExcursion = null;
 
 
@@ -271,7 +272,21 @@ System.out.println(endTime);
 
 
             model.addAttribute("monuments", monuments);
+            boolean hasAbility = false;
+            if (principal != null) {
+                hasAbility = userService.getCurrentUser(principal)
+                        .map(user -> user.getRole().equals(Role.ADMIN))
+                        .orElse(false);
 
+                if (!hasAbility) {
+                    hasAbility = excursionService.getExcursionById(Long.parseLong(id))
+                            .get()
+                            .getGuideId()
+                            .equals(userService.getCurrentUser(principal).get().getId());
+
+                }
+                model.addAttribute("hasAbility", hasAbility);
+            }
 
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());

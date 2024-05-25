@@ -48,7 +48,7 @@ public class SecurityWebConfiguration {
                     .loginPage("/auth/login")
                     .usernameParameter("email")
                     .passwordParameter("password")
-                    .successForwardUrl("/web/tasks")
+                    .defaultSuccessUrl("/web/monuments")
 
 
                     .and()

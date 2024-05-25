@@ -34,8 +34,13 @@
                 <div class="error item-error"><span th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></span></div>
             </div>
 
+
             <div class="item-container">
-                <div class="item-label"><label for="password">Password:</label></div>
+                <div class="item-label"><label for="password">Password:</label>
+                    <button type="button" class="show-password" onmousedown="showPassword()" onmouseup="hidePassword()"
+                            onmouseleave="hidePassword()">👁️
+                    </button>
+                </div>
                 <div class="item-input"><input type="text" id="password" th:field="*{password}" required/></div>
                 <div class="error item-error"><span th:if="${#fields.hasErrors('password')}" th:errorclass="error"
                                               th:errors="*{password}"></span></div>
@@ -49,5 +54,14 @@
         </div>
     </div>
 </div>
+<script>
+    function showPassword() {
+        document.getElementById('password').type = 'text';
+    }
+
+    function hidePassword() {
+        document.getElementById('password').type = 'password';
+    }
+</script>
 </body>
 </html>

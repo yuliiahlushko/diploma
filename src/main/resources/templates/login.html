@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diploma</title>
+
 </head>
 <body>
 <div class="body-container">
@@ -33,11 +34,19 @@
             </div>
 
             <div class="item-container">
-                <div class="item-label"><label for="password">Password:</label></div>
-                <div class="item-input"><input type="text" id="password" name="password" required/></div>
+                <div class="item-label">
+                    <label for="password">Password:</label>
+                    <button type="button" class="show-password" onmousedown="showPassword()" onmouseup="hidePassword()"
+                                                                   onmouseleave="hidePassword()">👁️
+                </button>
+                </div>
+                <div class="item-input">
+                    <input type="password" id="password" name="password" required/>
+
+                </div>
             </div>
 
-                <button class="form-button" type="submit">Sing In</button>
+            <button class="form-button" type="submit">Sing In</button>
         </form>
 
         <div class="other-form-url">
@@ -45,6 +54,14 @@
         </div>
     </div>
 </div>
+<script>
+    function showPassword() {
+        document.getElementById('password').type = 'text';
+    }
 
+    function hidePassword() {
+        document.getElementById('password').type = 'password';
+    }
+</script>
 </body>
 </html>

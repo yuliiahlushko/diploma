@@ -1,10 +1,13 @@
 package com.example.excursionPlanning.controllers.web;
 
-import com.example.excursionPlanning.dto.*;
+import com.example.excursionPlanning.dto.CommentDTO;
+import com.example.excursionPlanning.dto.GradeDTO;
+import com.example.excursionPlanning.dto.ImageModelDTO;
+import com.example.excursionPlanning.dto.MonumentDTO;
 import com.example.excursionPlanning.entity.Comment;
 import com.example.excursionPlanning.entity.Grade;
-import com.example.excursionPlanning.entity.ImageModel;
 import com.example.excursionPlanning.entity.Monument;
+import com.example.excursionPlanning.entity.enums.Role;
 import com.example.excursionPlanning.facade.*;
 import com.example.excursionPlanning.paginationandsorting.PageSettings;
 import com.example.excursionPlanning.payload.web.*;
@@ -19,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +36,10 @@ public class MonumentController {
     private ImageModelService imageModelService;
 
     @Autowired
-    private ImageModelFacadeResponse imageModelFacadeResponse;
+    private ExcursionService excursionService;
+
+    @Autowired
+    private ExcursionsResponseFacade excursionsResponseFacade;
 
     @Autowired
     private MonumentFacade monumentFacade;
@@ -52,14 +57,18 @@ public class MonumentController {
     private CommentService commentService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private MonumentExcursionResponseFacade monumentExcursionResponseFacade;
 
     @GetMapping(value = "/new")
-    public String getFormForCreateNewMonument(Model model) {
+    public String getFormForCreateNewMonument(Model model, Principal principal) {
 
-
-        model.addAttribute("monument", new MonumentDTO());
-        return "createMonument";
+        if (userService.getCurrentUser(principal).get().getRole().equals(Role.ADMIN)) {
+            model.addAttribute("monument", new MonumentDTO());
+            return "createMonument";
+        } else return "noAbilityPage";
 
 
     }
@@ -69,6 +78,7 @@ public class MonumentController {
                                  BindingResult bindingResult,
                                  Model model,
                                  Principal principal) {
+        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
 
         if (bindingResult.hasErrors()) {
             return "createMonument";
@@ -176,6 +186,7 @@ public class MonumentController {
     public String updateMonumentInfo(@Valid @ModelAttribute("monument") MonumentResponse monumentResponse,
                                      BindingResult bindingResult,
                                      Principal principal, Model model) {
+        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
 
         if (bindingResult.hasErrors()) {
             return "editMonument";
@@ -239,7 +250,20 @@ public class MonumentController {
             model.addAttribute("images", images);
             model.addAttribute("comments", comments);
             model.addAttribute("grade", grade);
+            if (principal != null) {
+                boolean isAdmin = userService.getCurrentUser(principal)
+                        .map(user -> user.getRole().equals(Role.ADMIN))
+                        .orElse(false);
+                model.addAttribute("isUser", isAdmin);
+            }
 
+            List<ExcursionsResponse> excursions = excursionService
+                    .getExcursionByMonumentId(Long.parseLong(id))
+                    .stream()
+                    .map(excursionsResponseFacade::convertExcursionToExcursionsResponse)
+                    .toList();
+
+            model.addAttribute("excursions", excursions);
 
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
@@ -255,6 +279,7 @@ public class MonumentController {
     public String editMonumentById(@PathVariable("id") String id,
                                    Principal principal,
                                    Model model) {
+        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
         MonumentDTO monument = null;
         try {
             monument = monumentFacade
@@ -272,7 +297,8 @@ public class MonumentController {
 
     @GetMapping(value = "/{id}/editPhotos")
     public String editMonumentPhotosById(@PathVariable("id") String id,
-                                         Model model) {
+                                         Model model, Principal principal) {
+        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
 
         try {
 
@@ -303,7 +329,7 @@ public class MonumentController {
                               MultipartFile file,
                               Model model) {
 
-
+        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
         if (file.isEmpty()) {
 
             model.addAttribute("error", "emptyFile");
@@ -324,7 +350,7 @@ public class MonumentController {
     public String deletePhoto(@PathVariable("id") Long id,
                               @PathVariable("photoId") Long photoId,
                               Principal principal) {
-
+        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
         imageModelService.deleteImageModel(photoId, principal);
 
         String url = "/web/monuments/" + id.toString() + "/editPhotos";
@@ -334,7 +360,7 @@ public class MonumentController {
 
     @DeleteMapping("/{id}")
     public String DeleteMonumentById(@PathVariable("id") String id, Principal principal) {
-
+        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
         monumentService.deleteMonument(Long.parseLong(id), principal);
         return "redirect:/web/monuments";
     }

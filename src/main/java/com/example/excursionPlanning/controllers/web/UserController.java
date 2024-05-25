@@ -2,13 +2,18 @@ package com.example.excursionPlanning.controllers.web;
 
 
 import com.example.excursionPlanning.dto.UserDTO;
-import com.example.excursionPlanning.facade.UserFacadeRequest;
-import com.example.excursionPlanning.facade.UserFacadeResponse;
+import com.example.excursionPlanning.facade.*;
+import com.example.excursionPlanning.paginationandsorting.PageSettings;
+import com.example.excursionPlanning.payload.web.ExcursionsResponse;
 import com.example.excursionPlanning.payload.web.UpdateUserFormRequest;
 import com.example.excursionPlanning.payload.web.UserProfileResponse;
+import com.example.excursionPlanning.services.interfaces.ExcursionService;
+import com.example.excursionPlanning.services.interfaces.ImageModelService;
 import com.example.excursionPlanning.services.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.Base64;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/web/user")
@@ -34,6 +40,13 @@ public class UserController {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ExcursionService excursionService;
+
+    @Autowired
+    private ExcursionsResponseFacade excursionsResponseFacade;
+
 
     @GetMapping()
     public String getUserForUpdate(Principal principal,
@@ -74,6 +87,15 @@ public class UserController {
 
         }
 
+
+        List<ExcursionsResponse> excursions = excursionService
+                .getAllConductedExcursionsByUser(userService.getCurrentUser(principal).get().getId())
+                .stream()
+                .map(excursionsResponseFacade::convertExcursionToExcursionsResponse)
+                .toList();
+
+        model.addAttribute("excursions", excursions);
+
         return "userPage";
 
     }
@@ -92,6 +114,15 @@ public class UserController {
             model.addAttribute("error", e.getMessage());
 
         }
+
+
+        List<ExcursionsResponse> excursions = excursionService
+                .getAllConductedExcursionsByUser(Long.parseLong(id))
+                .stream()
+                .map(excursionsResponseFacade::convertExcursionToExcursionsResponse)
+                .toList();
+
+        model.addAttribute("excursions", excursions);
 
         return "userPage";
 
