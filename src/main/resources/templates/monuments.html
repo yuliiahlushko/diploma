@@ -29,7 +29,7 @@
 
         </span>
 
-    <div class="panel">
+    <div class="panel" th:if="${!monuments.isEmpty()}">
         <select name="city" class="category-city" onchange="handleSelectChange(this)">
             <option th:value="'-1'"></option>
             <th:block th:each="city : ${cities}">
@@ -106,10 +106,10 @@
                         monumentDiv.innerHTML = `
     <a href="/web/monuments/${monument.id}"><p>${monument.title != null ? monument.title : ''}</p></a>
     <p>${monument.description}</p>
-    <p>Цена: ${monument.price}</p>
-    <p>Город: ${monument.city}</p>
-    <p>Средняя оценка: ${monument.avgGrade}</p>
-    <p>Дата создания: ${new Date(monument.createdDate).toLocaleString()}</p>
+    <p>Price: ${monument.price}</p>
+    <p>City: ${monument.city}</p>
+    <p>Grade: ${monument.avgGrade}</p>
+    <p>Created: ${new Date(monument.createdDate).toLocaleString()}</p>
 `;
                         searchResults.appendChild(monumentDiv);
                     });

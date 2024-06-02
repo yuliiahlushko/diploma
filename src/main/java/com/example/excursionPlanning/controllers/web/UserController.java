@@ -2,6 +2,8 @@ package com.example.excursionPlanning.controllers.web;
 
 
 import com.example.excursionPlanning.dto.UserDTO;
+import com.example.excursionPlanning.entity.User;
+import com.example.excursionPlanning.entity.enums.Role;
 import com.example.excursionPlanning.facade.*;
 import com.example.excursionPlanning.paginationandsorting.PageSettings;
 import com.example.excursionPlanning.payload.web.ExcursionsResponse;
@@ -128,6 +130,25 @@ public class UserController {
 
     }
 
+    @GetMapping("/{login}/lock")
+    public String lockUser(@PathVariable("login") String login,
+                           Principal principal,
+                           Model model) {
+        User user = null;
+        if (userService.getCurrentUser(principal).get().getRole().equals(Role.ADMIN)) {
+            try {
+                user = userService.lock(login);
+
+
+            } catch (Exception e) {
+                model.addAttribute("error", e.getMessage());
+
+            }
+        }
+
+        return "redirect:/web/user/" + user.getId().toString() + "/profile";
+
+    }
 
     @PatchMapping()
     public String updateUser(@Valid @ModelAttribute("user") UpdateUserFormRequest user,
@@ -179,5 +200,20 @@ public class UserController {
 
         return "redirect:/web/user/profile";
 
+    }
+
+
+    @ModelAttribute("isadmin")
+    public boolean isAdmin(Principal principal) {
+
+        boolean hasAbility = false;
+        if (principal != null) {
+            hasAbility = userService.getCurrentUser(principal)
+                    .map(user -> user.getRole().equals(Role.ADMIN))
+                    .orElse(false);
+
+
+        }
+        return hasAbility;
     }
 }

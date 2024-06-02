@@ -148,7 +148,7 @@ v
 
                 <div th:each="comment : ${comments}" class="comment-actions">
 
-                    <div th:if="${#authentication.getName() == comment.userLogin}">
+                    <div th:if="${#authentication.getName() == comment.userLogin || isadmin}">
                         <button class="edit-comment">Edit</button>
                     </div>
 
@@ -157,7 +157,7 @@ v
                         <div><p th:text="${comment.message}"></p></div>
                     </div>
 
-                    <div th:if="${#authentication.getName() == comment.userLogin}">
+                    <div th:if="${#authentication.getName() == comment.userLogin || isadmin}">
                         <form th:action="@{/web/monuments/{monumentId}/deleteComment/{id}(monumentId=${monument.id},id=${comment.id})}"
                               method="post">
                             <input type="hidden" name="_method" value="DELETE"/>

@@ -35,6 +35,9 @@ public class Excursion {
     @ElementCollection
     private List<Long> likesUserId = new ArrayList<>();
 
+    @ElementCollection
+    private List<Long> seatsUserId = new ArrayList<>();
+
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(name = "monument_excursion_table",
             joinColumns = @JoinColumn(name = "Monument_ID"),

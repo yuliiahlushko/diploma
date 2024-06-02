@@ -22,11 +22,12 @@
 
     <span th:if="${excursions == null || excursions.isEmpty()}">
         <div class="body-title">
-            <h3>There are no excursions yet. <a th:href="@{/web/excursions/new}">You can add a new excursion here</a></h3>
+            <h3>There are no excursions yet. <a
+                    th:href="@{/web/excursions/new}">You can add a new excursion here</a></h3>
         </div>
     </span>
 
-    <div class="panel">
+    <div class="panel" th:if="${excursions != null} and ${not excursions.isEmpty()}">
         <input type="text" id="searchInput" name="search" placeholder="Enter the name">
         <div id="searchResults" class="search-results"></div>
 

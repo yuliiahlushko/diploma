@@ -65,10 +65,9 @@ public class MonumentController {
     @GetMapping(value = "/new")
     public String getFormForCreateNewMonument(Model model, Principal principal) {
 
-        if (userService.getCurrentUser(principal).get().getRole().equals(Role.ADMIN)) {
-            model.addAttribute("monument", new MonumentDTO());
-            return "createMonument";
-        } else return "noAbilityPage";
+
+        model.addAttribute("monument", new MonumentDTO());
+        return "createMonument";
 
 
     }
@@ -78,7 +77,7 @@ public class MonumentController {
                                  BindingResult bindingResult,
                                  Model model,
                                  Principal principal) {
-        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
+
 
         if (bindingResult.hasErrors()) {
             return "createMonument";
@@ -186,7 +185,7 @@ public class MonumentController {
     public String updateMonumentInfo(@Valid @ModelAttribute("monument") MonumentResponse monumentResponse,
                                      BindingResult bindingResult,
                                      Principal principal, Model model) {
-        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
+
 
         if (bindingResult.hasErrors()) {
             return "editMonument";
@@ -250,13 +249,23 @@ public class MonumentController {
             model.addAttribute("images", images);
             model.addAttribute("comments", comments);
             model.addAttribute("grade", grade);
+            boolean hasAbility = false;
             if (principal != null) {
-                boolean isAdmin = userService.getCurrentUser(principal)
+                hasAbility = userService.getCurrentUser(principal)
                         .map(user -> user.getRole().equals(Role.ADMIN))
                         .orElse(false);
-                model.addAttribute("isUser", isAdmin);
+
+                if (!hasAbility) {
+                    hasAbility = excursionService.getExcursionById(Long.parseLong(id))
+                            .get()
+                            .getGuideId()
+                            .equals(userService.getCurrentUser(principal).get().getId());
+
+                }
+                model.addAttribute("hasAbility", hasAbility);
             }
 
+            model.addAttribute("isUser", hasAbility);
             List<ExcursionsResponse> excursions = excursionService
                     .getExcursionByMonumentId(Long.parseLong(id))
                     .stream()
@@ -279,7 +288,7 @@ public class MonumentController {
     public String editMonumentById(@PathVariable("id") String id,
                                    Principal principal,
                                    Model model) {
-        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
+
         MonumentDTO monument = null;
         try {
             monument = monumentFacade
@@ -298,7 +307,7 @@ public class MonumentController {
     @GetMapping(value = "/{id}/editPhotos")
     public String editMonumentPhotosById(@PathVariable("id") String id,
                                          Model model, Principal principal) {
-        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
+
 
         try {
 
@@ -329,7 +338,7 @@ public class MonumentController {
                               MultipartFile file,
                               Model model) {
 
-        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
+
         if (file.isEmpty()) {
 
             model.addAttribute("error", "emptyFile");
@@ -350,7 +359,7 @@ public class MonumentController {
     public String deletePhoto(@PathVariable("id") Long id,
                               @PathVariable("photoId") Long photoId,
                               Principal principal) {
-        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
+
         imageModelService.deleteImageModel(photoId, principal);
 
         String url = "/web/monuments/" + id.toString() + "/editPhotos";
@@ -360,7 +369,7 @@ public class MonumentController {
 
     @DeleteMapping("/{id}")
     public String DeleteMonumentById(@PathVariable("id") String id, Principal principal) {
-        if (userService.getCurrentUser(principal).get().getRole().equals(Role.USER)) return "noAbilityPage";
+
         monumentService.deleteMonument(Long.parseLong(id), principal);
         return "redirect:/web/monuments";
     }
@@ -415,7 +424,8 @@ public class MonumentController {
 
         Optional<Comment> comm = commentService.getCommentById(Long.parseLong(id), principal);
 
-        if (comm.isPresent() && comm.get().getUserLogin().equals(principal.getName())) {
+        if (comm.isPresent() && (comm.get().getUserLogin().equals(principal.getName()) ||
+                userService.getCurrentUser(principal).get().getRole().equals(Role.ADMIN))) {
 
             CommentDTO newComm = new CommentDTO();
             newComm.setId(comm.get().getId());
@@ -439,7 +449,8 @@ public class MonumentController {
 
         Optional<Comment> comm = commentService.getCommentById(Long.parseLong(id), principal);
 
-        if (comm.isPresent() && comm.get().getUserLogin().equals(principal.getName())) {
+        if (comm.isPresent() && (comm.get().getUserLogin().equals(principal.getName()) ||
+                userService.getCurrentUser(principal).get().getRole().equals(Role.ADMIN))) {
 
 
             commentService.deleteComment(Long.parseLong(id), principal);
@@ -448,5 +459,18 @@ public class MonumentController {
         return "redirect:/web/monuments/" + monumentId;
     }
 
+    @ModelAttribute("isadmin")
+    public boolean isAdmin(Principal principal) {
+
+        boolean hasAbility = false;
+        if (principal != null) {
+            hasAbility = userService.getCurrentUser(principal)
+                    .map(user -> user.getRole().equals(Role.ADMIN))
+                    .orElse(false);
+
+
+        }
+        return hasAbility;
+    }
 
 }

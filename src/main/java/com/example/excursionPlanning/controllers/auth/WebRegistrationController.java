@@ -39,7 +39,7 @@ public class WebRegistrationController {
             authenticationService.register(userDTO);
 
         } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("error","User with this data can`t be created");
             return CREATE_USER_PAGE;
         }
         return "redirect:/auth/login";

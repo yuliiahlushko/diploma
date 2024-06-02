@@ -133,6 +133,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.getUserById(id);
     }
 
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.getUserByEmail(email);
+    }
+
+    @Override
+    public User lock(String email) {
+        User user = getUserByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.isAccountNonLocked()) user.lock();
+        else user.nonLock();
+
+        return  userRepository.save(user);
+
+    }
+
     @Transactional(readOnly = true)
     public Optional<User> getCurrentUser(Principal principal) {
         return getUserByPrincipal(principal);

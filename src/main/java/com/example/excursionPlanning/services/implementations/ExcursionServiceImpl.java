@@ -120,6 +120,24 @@ public class ExcursionServiceImpl implements ExcursionService {
         }
     }
 
+    @Override
+    public void getTicket(Long id, Principal principal) {
+
+        Excursion excursion = excursionRepository.getExcursionById(id)
+                .orElseThrow(() -> new RuntimeException("Excursion not exist"));
+        Long userId = userRepository.getUserByEmail(principal.getName()).get().getId();
+        if (!excursion.getSeatsUserId().contains(userId)) {
+            if (excursion.getSeatsUserId().size() == excursion.getNumberOfSeats()) {
+                throw new RuntimeException("Haven`t free seats");
+            }
+            excursion.setNumberOfSeats(excursion.getNumberOfSeats() - 1);
+            excursion.getSeatsUserId().add(userId);
+        } else {
+            excursion.setNumberOfSeats(excursion.getNumberOfSeats() + 1);
+            excursion.getSeatsUserId().remove(userId);
+        }
+    }
+
 
     @Override
     public Optional<Excursion> getExcursionById(Long id) {
@@ -158,8 +176,6 @@ public class ExcursionServiceImpl implements ExcursionService {
     }
 
 
-
-
     @Override
     public Optional<Excursion> patchExcursion(ExcursionEditRequest excursion, Principal principal) {
         Optional<Excursion> newExcursion = excursionRepository.getExcursionById(excursion.getId());
@@ -193,7 +209,7 @@ public class ExcursionServiceImpl implements ExcursionService {
                 }
             }
 
-            if (excursion.getMonuments()!= null){
+            if (excursion.getMonuments() != null) {
                 newExcursion.get().setMonuments(excursion.getMonuments());
             }
 

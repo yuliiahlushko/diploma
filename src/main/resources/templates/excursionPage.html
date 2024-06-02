@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diploma</title>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/styles.css"> <!-- Подключение вашего CSS файла -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -47,11 +47,24 @@
                     <button class="form-button like-button">Like</button>
                 </a>
 
+                <a th:href="@{/web/excursions/{id}/getTicket(id=${excursion.id})}"
+                   onclick="return confirmAction(event)">
+                    <button th:if="${excursion.numberOfSeats > 0 && !isHaveTicket}"
+                            class="form-button like-button">Get ticket
+                    </button>
+                    <button th:if="${isHaveTicket}" class="form-button like-button">
+                        Return the ticket
+                    </button>
+                    <button th:if="${excursion.numberOfSeats == 0 && !isHaveTicket}"
+                            class="form-button like-button" disabled >All tickets sold
+                    </button>
+                </a>
+
 
             </div>
         </div>
 
-        <div class="form-container bio-container"  >
+        <div class="form-container bio-container">
             <h2>Title</h2>
             <h3><span th:if="${excursion.title} != null" th:text="${excursion.title}"
                       th:unless="${excursion.title} == null">Not indicated</span></h3>
@@ -118,7 +131,6 @@
             </div>
 
 
-
         </div>
     </div>
 </div>
@@ -146,6 +158,15 @@
     function editProfile(button) {
         const excursionId = button.getAttribute('data-excursion-id');
         window.location.href = '/web/excursions/' + excursionId + '/edit';
+    }
+</script>
+<script>
+    function confirmAction(event) {
+        var result = confirm('You are confident in your actions?');
+        if (!result) {
+            event.preventDefault(); // Останавливаем выполнение действия по умолчанию
+        }
+        return result;
     }
 </script>
 </body>

@@ -18,6 +18,10 @@ public interface UserService {
 
     Optional<User> getUserById(Long id);
 
+    Optional<User> getUserByEmail(String email);
+
+    User lock (String login);
+
     Optional<User> getCurrentUser(Principal principal);
 
     UpdateUserFormRequest patchUser(UpdateUserFormRequest user, Principal principal,

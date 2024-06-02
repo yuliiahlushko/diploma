@@ -23,6 +23,7 @@ public interface ExcursionService {
 
     void like(Long id, Principal principal);
 
+    public void getTicket(Long id, Principal principal);
 
     Optional<Excursion> getExcursionById(Long id);
 
@@ -31,7 +32,6 @@ public interface ExcursionService {
     public Optional<Excursion> deletePhoto(Long excursionId, Principal principal);
 
     Optional<Excursion> patchExcursion(ExcursionEditRequest excursion, Principal principal);
-
 
 
     List<Excursion> getAllConductedExcursionsByUser(Long guideId);

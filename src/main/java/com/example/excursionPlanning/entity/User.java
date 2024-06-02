@@ -28,7 +28,7 @@ import java.util.List;
 @Table(name = "_user", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 @EqualsAndHashCode
 @ToString
-public class User implements UserDetails  {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,12 +41,14 @@ public class User implements UserDetails  {
     private String bio;
 
     @Column(unique = true)
-    @Size(max = 40,message = "The maximum name size is 40 literals")
+    @Size(max = 40, message = "The maximum name size is 40 literals")
     private String login;
 
     @Column(unique = true)
     @Email
     private String email;
+
+    private boolean isLocked = false;
 
     @Pattern(regexp = "^[^\\s]{8,}$", message = "The min password size is 8 literals")
     private String password;
@@ -54,9 +56,7 @@ public class User implements UserDetails  {
     @Enumerated
     private Role role;
 
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user", fetch = FetchType.LAZY)
-//    @ToString.Exclude
-//    private  List<Task> tasks = new ArrayList<>();
+
     @DateTimeFormat(pattern = "hh:mm:ss dd-mm-yyyy")
     @Column(updatable = false)
     private LocalDateTime createDate;
@@ -67,7 +67,7 @@ public class User implements UserDetails  {
         this.createDate = LocalDateTime.now();
 
         try {
-           this.image = new FileLoader().loadFileAsBytes("image-icon.jpg");
+            this.image = new FileLoader().loadFileAsBytes("image-icon.jpg");
 
             // Сохраняем массив байтов в поле объекта или переменную, где вам нужно будет использовать его
         } catch (IOException e) {
@@ -81,6 +81,16 @@ public class User implements UserDetails  {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    public boolean lock() {
+
+        return this.isLocked = true;
+    }
+
+    public boolean nonLock() {
+
+        return this.isLocked = false;
     }
 
     @Override
@@ -100,7 +110,7 @@ public class User implements UserDetails  {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isLocked;
     }
 
     @Override

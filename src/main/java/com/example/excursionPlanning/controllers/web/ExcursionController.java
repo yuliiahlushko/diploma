@@ -76,7 +76,7 @@ public class ExcursionController {
         }
         Excursion excursion = null;
         try {
-            if (excursionRequest.getEndTime().isAfter(excursionRequest.getStartTime())) {
+            if (excursionRequest.getEndTime().isBefore(excursionRequest.getStartTime())) {
                 throw (new RuntimeException("Start time cant be after end time"));
             }
             excursion = excursionService.createExcursion(excursionRequest, principal)
@@ -99,6 +99,21 @@ public class ExcursionController {
 
         try {
             excursionService.like(Long.parseLong(id), principal);
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
+
+        }
+        return "redirect:/web/excursions/" + id;
+
+    }
+
+    @GetMapping(value = "/{id}/getTicket")
+    public String getTicketOnExcursion(Principal principal,
+                                       @PathVariable String id,
+                                       Model model) {
+
+        try {
+            excursionService.getTicket(Long.parseLong(id), principal);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
 
@@ -202,7 +217,7 @@ public class ExcursionController {
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("excursion", excursion);
-            System.out.println(e.getMessage());
+
             return "editExcursion";
         }
 
@@ -293,6 +308,12 @@ public class ExcursionController {
             System.out.println(e.getMessage());
         }
 
+        Boolean isHaveTicket = excursionService.getExcursionById(Long.parseLong(id))
+                .get()
+                .getSeatsUserId()
+                .contains(userService.getCurrentUser(principal).get().getId());
+
+        model.addAttribute("isHaveTicket", isHaveTicket);
         return "excursionPage";
 
 

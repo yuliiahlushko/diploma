@@ -30,11 +30,13 @@
 
                 </div>
             </div>
-            <div class="buttons"
-                 th:if="${#authentication.principal != null and #authentication.principal.login == user.login}">
+
+            <div th:if="${#authentication.principal != null and #authentication.principal.login == user.login}">
                 <button class="form-button" onclick="deletePhoto()">Delete photo</button>
                 <button class="form-button" onclick="editProfile()">Edit profile</button>
+
             </div>
+
         </div>
 
         <div class="form-container bio-container">
