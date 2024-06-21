@@ -28,13 +28,14 @@
     </span>
 
     <div class="panel" th:if="${excursions != null} and ${not excursions.isEmpty()}">
-        <input type="text" id="searchInput" name="search" placeholder="Enter the name">
-        <div id="searchResults" class="search-results"></div>
+        <input type="text" id="searchInput" name="search" placeholder="Enter the name" class="styled-input">
+        <div id="searchResults" class="search-results styled-div"></div>
 
-        <input type="datetime-local" id="startTime" name="startTime" placeholder="Start Time">
-        <input type="datetime-local" id="endTime" name="endTime" placeholder="End Time">
-        <input type="number" id="minPrice" name="minPrice" placeholder="Min Price">
+        <input type="datetime-local" id="startTime" name="startTime" placeholder="Start Time" class="styled-input">
+        <input type="datetime-local" id="endTime" name="endTime" placeholder="End Time" class="styled-input">
+        <input type="number" id="minPrice" name="minPrice" placeholder="Min Price" class="styled-input">
     </div>
+
 
     <div th:each="excursion : ${excursions}" class="item-container">
         <div class="form-container photo-external-container">

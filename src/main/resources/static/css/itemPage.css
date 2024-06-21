@@ -11,9 +11,8 @@
     margin: 2em 0.5em;
     padding: 2em;
     justify-content: stretch;
-    background-color: #1d72c8;
+    background-color: #f4b315;
     border-radius: 0.313em;
-    box-shadow: 0px 0.5em 1.2em rgba(0, 0, 0, 0.3);
     align-items: center;
 
 
@@ -32,6 +31,7 @@
     justify-content: center;
     flex-wrap: wrap;
 
+
 }
 
 .photo-container {
@@ -41,18 +41,21 @@
     margin: 2em 0.5em;
 
 
+
 }
 
 .bio-container {
 
     min-width: 50%;
     max-width: 50%;
+    box-shadow: rgb(26, 20, 26) 0px 22px 70px 4px;
 
 }
 
 .buttons {
     width: 90%;
     display: flex;
+
 }
 
 .down-container {
@@ -65,6 +68,7 @@
     display: flex;
 
     flex-wrap: wrap;
+    box-shadow: rgb(26, 20, 26) 0px 22px 70px 4px;
 }
 
 /* Зображення буде мати ширина 300px і висота 200px */
@@ -78,7 +82,7 @@
     width: 200px; /* Задати ширину зображення */
     height: 200px; /* Зберігає пропорції */
     border-radius: 50%;
-    box-shadow: 0px 0.5em 1.2em rgba(0, 0, 0, 0.3);
+    box-shadow: rgb(26, 20, 26) 0px 22px 70px 4px;
 }
 
 .form-container h1 {
@@ -96,6 +100,8 @@
     align-items: flex-start;
     justify-items: stretch;
     width: 100%;
+
+
 }
 
 .item-container h2 {
@@ -105,6 +111,7 @@
     color: black;
     width: 100%;
     text-align: center;
+
 }
 
 .item-container h3 {
@@ -120,14 +127,15 @@
 .form-button {
     padding: 0.625em;
     border-radius: 0.313em;
-    background-color: #072a88;
-    color: #e9eaec;
+    background-color: #8e5915;
+    color: #1a141a;
     border: none;
     font-size: 1.2em;
     width: 100%;
     height: 50%;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+    box-shadow: rgb(26, 20, 26) 0px 22px 70px 4px;
     margin-bottom: 0.625em;
     display: inline-block; /* чтобы форма занимала только необходимое пространство */
     text-align: center; /* чтобы текст в форме был по центру */
@@ -145,8 +153,8 @@
 }
 
 .navigation button {
-    background-color: #072a88;
-    color: #ffffff;
+    background-color: #8e5915;
+    color: #1a141a;
     border: none;
     border-radius: 50%;
     width: 20%;
@@ -159,12 +167,16 @@
 }
 
 .navigation button:hover {
-    background-color: #0e3eaf;
+    background-color: #8e5915;
+    color: #1a141a;
+    box-shadow: rgb(26, 20, 26) 0px 22px 70px 4px;
 }
 
 
 .review_text{
     min-width: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
 .review_form {
@@ -181,7 +193,7 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     resize: vertical;
-
+    background-color: #8e5915;
 }
 
 .rating {
@@ -199,7 +211,9 @@
     cursor: pointer;
     width: 30px;
     height: 30px;
-    background-color: #ddd;
+    background-color: #f1e9ae;
+    color: #1a141a;
+
     border-radius: 50%;
     margin: 0 5px;
 }
@@ -212,7 +226,8 @@
 }
 
 .rating input[type="radio"]:checked ~ label {
-    background-color: #e8e110d1; /* желтый цвет для активного кружочка */
+    background-color: #8e5915; /* желтый цвет для активного кружочка */
+    color: #423738;
 }
 
 
@@ -236,16 +251,16 @@
 
 /* Стили для ползунка при наведении на него курсора мыши */
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #555; /* Цвет ползунка при наведении */
+    background-color: #efee8f; /* Цвет ползунка при наведении */
 }
 
 .last_comments{
 
-
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    display: flex;
     min-width: 100%;
-    height: 200px;
+    height: 350px;
     overflow: auto;
 
 
@@ -254,6 +269,7 @@
     display: flex;
     justify-content: stretch;
     align-items: center;
+    text-align: center;
     width: 100%;
 
 }
@@ -265,7 +281,7 @@
 
 .edit-comment,
 .delete-comment {
-    background-color: #4CAF50; /* Зеленый цвет */
+    background-color: #044207; /* Зеленый цвет */
     border: none;
     color: white;
     padding: 6px 12px; /* Уменьшаем отступы */
@@ -276,19 +292,19 @@
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 10%;
-    box-shadow: 0px 0.5em 1.2em rgba(0, 0, 0, 0.5);
+
     text-align: center;
 
 
 }
 
 .delete-comment{
-    background-color: rgb(181, 47, 23);
+    background-color: rgb(89, 18, 5);
 
 }
 
 .delete-comment:hover {
-    background-color: rgb(144, 28, 7);
+    background-color: rgb(176, 33, 7);
 }
 .edit-comment:hover{
     background-color: #127e15;
@@ -300,7 +316,9 @@
     text-align: center;
     min-width: 70%;
     margin: 5%;
-    background-color: #888;
+    background-color: #8e5915;
+    color: #1a141a;
+
 }
 
 /* Стили для модального окна */
@@ -354,7 +372,7 @@
 
 /* Стили для кнопки сохранения */
 #saveEdit {
-    background-color: #4CAF50; /* Зеленый цвет */
+    background-color: #075d0a; /* Зеленый цвет */
     color: white;
     padding: 10px 20px;
     border: none;
@@ -364,13 +382,13 @@
 }
 
 #saveEdit:hover {
-    background-color: #45a049; /* Темно-зеленый цвет при наведении */
+    background-color: #055408; /* Темно-зеленый цвет при наведении */
 }
 
 /* styles.css */
 
 .like-button {
-    background-color: #ff5a5f; /* Красный цвет фона */
+    background-color: #d7a360; /* Красный цвет фона */
     color: white; /* Белый цвет текста */
     border: none; /* Убираем рамку */
     padding: 10px 20px; /* Внутренние отступы */

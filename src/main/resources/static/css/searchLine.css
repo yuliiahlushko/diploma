@@ -9,7 +9,7 @@
 .search-results {
     position: absolute;
     width: 400px;
-    background-color: #fff;
+    background-color: #f4b315;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -35,7 +35,7 @@ input[type="number"] {
 }
 
 .panel {
-    background-color: #f2f2f2;
+    background-color: #8e5915;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
@@ -59,4 +59,100 @@ input[type="number"] {
 .panel input[type="text"],
 .panel input[type="number"] {
     width: 120px; /* Adjust the width as needed */
+}
+
+/* Стили для панели */
+.panel {
+    border: 1px solid #ccc;
+    padding: 5%;
+    margin: 5% ;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #8e5915;
+}
+
+/* Стили для input элементов */
+.styled-input {
+    width: calc(100% - 22px);
+    height: 70px; /* Установите желаемую высоту */
+    padding: 10px;
+    margin: 10px ;
+    border: 1px solid #ccc;
+    background-color: #f4b315;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+/* Стили для div с результатами поиска */
+.styled-div {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f4b315;
+    box-sizing: border-box;
+}
+
+/* Дополнительные стили для результатов поиска */
+.search-results {
+    min-height: 50px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    background-color: #f4b315;
+    padding: 10px;
+    border-radius: 4px;
+    display: inline-block; /* чтобы форма занимала только необходимое пространство */
+    text-align: center; /* чтобы текст в форме был по центру */
+}
+
+/* Search results container */
+.search-results {
+    min-height: 50px;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 10px;
+    margin: 10px 0;
+    flex: 2;
+    border-radius: 5px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Placeholder styling */
+::placeholder {
+    color: #aaa;
+    font-style: italic;
+}
+
+/* Additional styles for better appearance */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+.panel {
+    max-width: 90%;
+    margin: 5%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center; /* Выравнивание по высоте */
+    gap: 10px; /* Расстояние между элементами */
+}
+
+
+
+.search-results div {
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.search-results div:last-child {
+    border-bottom: none;
 }

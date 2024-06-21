@@ -12,7 +12,7 @@
 
 .left-buttons button,
 .right-button button {
-    background-color: #072a88;
+    background-color: #8e5915;
     color: white;
     border: none;
     padding: 0.625em 1.25em;
@@ -24,14 +24,14 @@
 }
 
 .left-buttons button:hover {
-    background-color: #072a88;
+    background-color: #8a5208;
 }
 
 
 .right-button button {
-    background-color: #f44336;
+    background-color: #831e17;
 }
 
 .right-button button:hover {
-    background-color: #e53935;
+    background-color: #520e0d;
 }

@@ -262,7 +262,7 @@ public class MonumentController {
                             .equals(userService.getCurrentUser(principal).get().getId());
 
                 }
-                model.addAttribute("hasAbility", hasAbility);
+
             }
 
             model.addAttribute("isUser", hasAbility);

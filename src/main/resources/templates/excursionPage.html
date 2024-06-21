@@ -43,25 +43,30 @@
                 <a th:href="@{/web/excursions/{excursionId}/edit(excursionId=${excursion.id})}">
                     <button class="form-button">Edit</button>
                 </a>
-                <a th:href="@{/web/excursions/{id}/like(id=${excursion.id})}">
-                    <button class="form-button like-button">Like</button>
-                </a>
-
-                <a th:href="@{/web/excursions/{id}/getTicket(id=${excursion.id})}"
-                   onclick="return confirmAction(event)">
-                    <button th:if="${excursion.numberOfSeats > 0 && !isHaveTicket}"
-                            class="form-button like-button">Get ticket
-                    </button>
-                    <button th:if="${isHaveTicket}" class="form-button like-button">
-                        Return the ticket
-                    </button>
-                    <button th:if="${excursion.numberOfSeats == 0 && !isHaveTicket}"
-                            class="form-button like-button" disabled >All tickets sold
-                    </button>
+                <a th:href="@{/web/excursions/{excursionId}/getList(excursionId=${excursion.id})}">
+                    <button class="form-button">Get list of people</button>
                 </a>
 
 
             </div>
+            <a th:href="@{/web/excursions/{id}/like(id=${excursion.id})}">
+                <button class="form-button like-button">Like</button>
+            </a>
+
+            <a th:href="@{/web/excursions/{id}/getTicket(id=${excursion.id})}"
+               onclick="return confirmAction(event)">
+                <button th:if="${excursion.numberOfSeats > 0 && !isHaveTicket}"
+                        class="form-button like-button">Get ticket
+                </button>
+                <button th:if="${isHaveTicket}" class="form-button like-button">
+                    Return the ticket
+                </button>
+                <button th:if="${excursion.numberOfSeats == 0 && !isHaveTicket}"
+                        class="form-button like-button" disabled>All tickets sold
+                </button>
+            </a>
+
+
         </div>
 
         <div class="form-container bio-container">
@@ -81,7 +86,7 @@
             <h2>Price: </h2>
             <h3><span th:if="${excursion.price} != null" th:text="${excursion.price}"
                       th:unless="${excursion.price} == null">Not indicated</span></h3>
-            <h2>NumberOfSeats: </h2>
+            <h2>Spaces left: </h2>
             <h3><span th:if="${excursion.numberOfSeats} != null" th:text="${excursion.numberOfSeats}"
                       th:unless="${excursion.numberOfSeats} == null">Not indicated</span></h3>
             <h2>Start Time: </h2>

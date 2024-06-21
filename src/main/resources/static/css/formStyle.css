@@ -7,6 +7,7 @@
     height: 84%;
     overflow: auto;
 
+
 }
 
 
@@ -15,8 +16,8 @@
     width: 27%;
     padding: 2em;
     border-radius: 0.313em;
-    box-shadow: 0px 0.125em 0.625em rgba(0, 0, 0, 0.3);
-    background-color: #fbf3fd;
+    box-shadow: rgb(26, 20, 26) 0px 22px 70px 4px;
+    background-color: #f4b315;
 }
 
 
@@ -42,19 +43,80 @@
 
 .item-container input {
     padding: 0.625em;
-    border: 0.063em solid #ccc;
+    border: 0.063em solid #423738;
     border-radius: 0.313em;
     font-size: 1.2em;
     width: 100%;
+    color: black;
+    background-color: #e59312;
 }
 
+.item-container input:focus {
+    background-color: #e59312;
+    color: black;
+    border-color: #423738;
+    outline: none;
+
+}
+
+/* Для предотвращения изменения стилей при автозаполнении (Google Chrome) */
+.item-container input:-webkit-autofill {
+    background-color: #e59312 !important; /* Сохраняет цвет фона */
+    color: black !important; /* Сохраняет цвет текста */
+    border-color: #423738 !important; /* Сохраняет цвет границы */
+    -webkit-box-shadow: 0 0 0px 1000px #e59312 inset; /* Запрещает изменение цвета фона */
+    -webkit-text-fill-color: black !important; /* Запрещает изменение цвета текста */
+}
+
+/* Для предотвращения изменения стилей при автозаполнении (Firefox) */
+.item-container input:-moz-autofill {
+    background-color: #e59312 !important; /* Сохраняет цвет фона */
+    color: black !important; /* Сохраняет цвет текста */
+    border-color: #423738 !important; /* Сохраняет цвет границы */
+}
+
+/* Для предотвращения изменения стилей при автозаполнении (Edge) */
+.item-container input:-ms-autofill {
+    background-color: #e59312 !important; /* Сохраняет цвет фона */
+    color: black !important; /* Сохраняет цвет текста */
+    border-color: #423738 !important; /* Сохраняет цвет границы */
+}
+
+
+/* Стили для числовых стрелок */
+.item-container input[type="number"]::-webkit-inner-spin-button,
+.item-container input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.item-container input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.item-container input[type="number"]::after {
+    content: "⬆⬇"; /* Символы стрелок */
+    position: absolute;
+    right: 10px;
+    color: #423738; /* Цвет стрелок */
+    pointer-events: none;
+    font-size: 1.2em;
+}
+
+.item-container {
+    position: relative;
+}
+
+.item-container input[type="number"] {
+    padding-right: 2em; /* Отступ для стрелок */
+}
 
 
 .form-button {
     padding: 0.625em;
     border-radius: 0.313em;
-    background-color: #072a88;
-    color: #e9eaec;
+    background-color: #8e5915;
+    color: #1a141a;
     border: none;
     font-size: 1.2em;
     width: 100%;
@@ -69,19 +131,20 @@
 
 }
 
-.input-file label{
+.input-file label {
     padding: 0.625em;
-    border: 0.063em solid #ccc;
+    border: 0.063em solid #423738;
     border-radius: 0.313em;
     font-size: 1.2em;
     width: 100%;
     min-height: 40%;
-    background-color: #ffffff;
+    background-color: #8e5915;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     margin-bottom: 0.625em;
 
 }
+
 .form-button:hover {
     opacity: 0.8;
 }
@@ -93,7 +156,7 @@
 }
 
 .other-form-url a {
-    color: #1c698a;
+    color: #1a141a;
     text-decoration: none;
 }
 
@@ -109,7 +172,7 @@
 
 /* Styling for error class */
 .error {
-    color: #ff0000;
+    color: #650707;
 
 }
 
@@ -127,7 +190,7 @@
 }
 
 .logout {
-    color: #6ad01a;
+    color: #1e3d05;
     font-size: 1em;
 
 }
@@ -135,7 +198,7 @@
 .image-preview img {
     width: 200px; /* Максимальна ширина */
     height: 200px; /* Максимальна висота */
-    border: 1px solid #ccc; /* Обрамлення */
+    border: 0.063em solid #1a141a;;
     margin-top: 3em; /* Відступ зверху */
     border-radius: 50%;
     box-shadow: 0px 0.5em 1.2em rgba(0, 0, 0, 0.3);
@@ -147,6 +210,7 @@
 .select2-container {
     width: 100%;
     font-size: 1.2em;
+    background-color: #8e5915;
 }
 
 .select2-results__option {
@@ -160,9 +224,9 @@
     position: relative;
     height: 20px;
     width: 20px;
-    border: 2px solid #e9e9e9;
+    border: 0.1em solid #423738;
     border-radius: 4px;
-    background-color: #fff;
+    background-color: #8e5915;
     margin-right: 20px;
     vertical-align: middle;
 }
@@ -170,19 +234,19 @@
 .select2-results__option[aria-selected=true]:before {
     font-family: fontAwesome;
     content: "\f00c";
-    color: #fff;
-    background-color: #f77750;
+    color: #1a141a;;
+    background-color: #8e5915;
     border: 0;
     display: inline-block;
     padding-left: 3px;
 }
 
 .select2-container--default .select2-results__option[aria-selected=true] {
-    background-color: #fff;
+    background-color: #8e5915;
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: #eaeaeb;
+    background-color: #8e5915;
     color: #272727;
 }
 
@@ -195,7 +259,7 @@
 }
 
 .select2-container--default.select2-container--focus .select2-selection--multiple {
-    border-color: #f77750;
+    border: 0.063em solid #423738;
     border-width: 2px;
 }
 
@@ -216,4 +280,24 @@
     background: none;
     border: none;
     font-size: 16px;
+}
+
+.item-container textarea {
+    width: 100%;
+    padding: 0.625em;
+    border: 0.063em solid #423738;
+    border-radius: 0.313em;
+    font-size: 1.2em;
+    background-color: #e59312; /* Цвет фона */
+    color: black; /* Цвет текста */
+    resize: vertical; /* Разрешить изменение размера только по вертикали */
+    outline: none; /* Убирает стандартное выделение браузера */
+}
+
+/* Стили для текстовой области при фокусе */
+.item-container textarea:focus {
+    background-color: #e59312; /* Сохраняет цвет фона при фокусе */
+    color: black; /* Сохраняет цвет текста при фокусе */
+    border-color: #423738; /* Цвет границы при фокусе */
+    outline: none; /* Убирает стандартное выделение браузера */
 }

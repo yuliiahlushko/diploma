@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" ></html>
+<html xmlns:th="http://www.thymeleaf.org"></html>
 <html lang="en">
 <head>
 
@@ -31,7 +31,7 @@
                 <div class="navigation">
                     <button id="prevButton" class="btn btn-primary"><</button>
                     <div class="photo">
-v
+
                         <img id="currentImage" class="gallery-image" src="" alt="Image">
 
                     </div>
@@ -41,7 +41,7 @@ v
             </div>
 
 
-            <div th:if="${#authentication.principal != null and isUser}">
+            <div th:if="${#authentication.principal != null} and ${isUser}">
                 <form th:action="@{/web/monuments/{id}(id=${monument.id})}" method="post">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <input type="submit" class="form-button" value="Delete"/>
@@ -141,9 +141,7 @@ v
         </div>
 
         <div class="form-container down-container" th:if="${!comments.isEmpty()}">
-            <div class="review_text">
-                <h2><span>last comments</span></h2>
-            </div>
+
             <div class="last_comments">
 
                 <div th:each="comment : ${comments}" class="comment-actions">

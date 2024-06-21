@@ -9,7 +9,7 @@
 
 
 .photo-edit-container {
-    background-color: #ea7f7f;
+    background-color: #8e5915;
     border-radius: 0.625em;
     box-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
     padding: 1.875em;
@@ -44,8 +44,8 @@
 .upload-form label {
     width: 90%; /* Занимает всю ширину формы */
     padding: 20px;
-    background-color: #007bff;
-    color: #fff;
+    color: black;
+    background-color: #e59312;
     border: none;
     justify-content: center;
     align-items: center;
@@ -57,14 +57,14 @@
 }
 
 .upload-form label:hover {
-    background-color: #0056b3;
+    background-color: #8e5915;
 }
 
 .upload-form button.form-button {
     width: 100%; /* Занимает всю ширину формы */
     padding: 20px;
-    background-color: #28a745;
-    color: #fff;
+    color: black;
+    background-color: #e59312;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -72,7 +72,8 @@
 }
 
 .upload-form button.form-button:hover {
-    background-color: #218838;
+    background-color: #8e5915;
+    color: black;
 }
 
 
@@ -80,7 +81,7 @@
 /* Кнопка удаления */
 .delete-button {
 
-    background-color: #dc3545;
+    background-color: #60050c;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -94,17 +95,19 @@
     width: 100%; /* Занимает всю ширину формы */
     padding: 10%;
     margin: 10%;
-    background-color: #9a28a7;
-    color: #fff;
+    background-color: #d3af85;
+    color: black;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
     border-radius: 10%; /* Закругляем углы */
+    box-shadow: rgb(26, 20, 26) 0px 22px 70px 4px;
 
 }
 .preview-photo-block{
     min-width: 50%;
     max-width: 50%;
     min-height: 50%;
+    box-shadow: rgb(26, 20, 26) 0px 22px 70px 4px;
     display: none;
 }

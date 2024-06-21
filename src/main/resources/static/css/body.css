@@ -2,7 +2,7 @@
 body {
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
-    color: #333;
+    color: #423738;
     margin: 0;
     padding: 0;
     width: 100vw;
@@ -10,7 +10,7 @@ body {
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
-    background-color: #ffffff;
+
 }
 
 /* Block styles */
@@ -20,4 +20,25 @@ body {
     margin-top: 1.875em;
     width: 95%;
 
+
+}
+
+input[type="datetime-local"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    width: 250px;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="datetime-local"]:focus {
+    border-color: #f1a14f;
+    box-shadow: 0 0 5px rgba(128, 113, 53, 0.5);
+    outline: none;
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5); /* Makes the calendar icon better visible in dark themes */
 }

@@ -22,26 +22,21 @@
         <h1>Monuments</h1>
     </div>
 
-    <span th:if="${monuments.isEmpty()}">
-         <div class="body-title">
-        <h3>There are no monuments yet.<a th:href="@{/web/monuments/new}">You can add a new monument here</a></h3>
-           </div>
 
-        </span>
 
-    <div class="panel" th:if="${!monuments.isEmpty()}">
-        <select name="city" class="category-city" onchange="handleSelectChange(this)">
+    <div class="panel" >
+        <select name="city" class="category-city styled-input" onchange="handleSelectChange(this)">
             <option th:value="'-1'"></option>
             <th:block th:each="city : ${cities}">
                 <option th:value="${city}" th:text="${city}"></option>
             </th:block>
         </select>
 
-        <input type="text" id="searchInput" name="search" placeholder="enter the name">
-        <div id="searchResults" class="search-results"></div>
+        <input type="text" id="searchInput" name="search" placeholder="enter the name"  class="styled-input">
+        <div id="searchResults" class="search-results styled-div" ></div>
 
-        <input type="number" id="minPrice" name="minPrice" placeholder="Min Price">
-        <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price">
+        <input type="number" id="minPrice" name="minPrice" placeholder="Min Price"  class="styled-input">
+        <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price"  class="styled-input">
 
     </div>
     <div th:each="monument : ${monuments}" class="item-container">

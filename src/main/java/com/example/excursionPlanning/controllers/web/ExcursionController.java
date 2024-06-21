@@ -43,7 +43,7 @@ public class ExcursionController {
     private ExcursionService excursionService;
 
     @Autowired
-    private ImageModelService imageModelService;
+    UserFacadeResponse userFacadeResponse;
 
     @Autowired
     private ExcursionFacade excursionFacade;
@@ -243,6 +243,27 @@ public class ExcursionController {
         model.addAttribute("monuments", monumentService.getAllMonuments());
         return "editExcursion";
 
+    }
+
+    @GetMapping(value = "/{id}/getList")
+    public String getListPeopleWhoWantVisited(@PathVariable("id") String id,
+                                              Model model) {
+
+        Excursion excursion = excursionService.getExcursionById(Long.parseLong(id)).get();
+        List<UserProfileResponse> users = null;
+
+        users = excursion
+                .getSeatsUserId()
+                .stream()
+                .map(x -> userFacadeResponse
+                        .convertUserToUserFacadeResponse(userService
+                                .getUserById(x)
+                                .get()))
+                .collect(Collectors.toList());
+        model.addAttribute("users", users);
+
+
+        return "excursionUsers";
     }
 
     @DeleteMapping("/{id}")
